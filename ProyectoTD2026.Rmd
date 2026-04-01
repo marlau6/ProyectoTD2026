@@ -1,0 +1,17 @@
+---
+title: "ProyectoTD"
+author: "Miriam Daaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Mini Proyecto 2026
+
+### Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025
+
+##### Tratamiento de Datos. Grado en Ciencia de Datos- UV
+
