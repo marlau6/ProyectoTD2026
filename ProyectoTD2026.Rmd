@@ -15,3 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##### Tratamiento de Datos. Grado en Ciencia de Datos- UV
 
+#Introducción
+
+Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
+
+El objetivo principal de este proyecto es analizar y explorar el comportamiento de los usuarios de la plataforma, identificando patrones de uso, frecuencia de acceso y posibles relaciones entre variables 
+
+El conjunto de datos utilizado contiene información anonimizada sobre las interacciones realizadas en la plataforma, por tanto permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
+
