@@ -1,3 +1,7 @@
 Pregunta 1
+¿Cuál es el día con mayor número de actividades registradas? ¿Y el día que menos? 
 Pregunta 2
+¿Qué eventos son los más usados?
+Pregunta 3
+¿Cuántas actividades se realizan de media por día?
 ...
