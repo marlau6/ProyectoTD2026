@@ -4,4 +4,10 @@ Pregunta 2
 ¿Qué eventos son los más usados?
 Pregunta 3
 ¿Cuántas actividades se realizan de media por día?
+Pregunta 4
+¿En qué días de la semana hay más actividad?
+Pregunta 5
+¿A qué horas del día se conectan más estudiantes?
+Pregunta 6
+¿Baja drásticamente la actividad los sábados y domingos o es cuando más se trabaja?
 ...
