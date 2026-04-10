@@ -10,4 +10,10 @@ Pregunta 5
 ¿A qué horas del día se conectan más estudiantes?
 Pregunta 6
 ¿Baja drásticamente la actividad los sábados y domingos o es cuando más se trabaja?
+Pregunta 7
+¿Hay mayor actividad en los períodos de exámenes que en las semanas lectivas habituales?
+Pregunta 8
+¿Hay actividades de las que se podría prescindir por su bajo uso?
+Pregunta 9
+¿Qué usuarios son más activos?
 ...
