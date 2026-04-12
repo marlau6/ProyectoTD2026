@@ -1,6 +1,6 @@
 ---
 title: "ProyectoTD"
-author: "Miriam Daaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
+author: "Miriam Díaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -35,6 +35,15 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
 head(logs_df, 5)
 
+```
+
+```{r}
+# Figura 1: Actividad por hora del dia
+
+library(ggplot2)
+logs_df$hora <- format(logs_df$Hora, "%H")
+
+ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
 ```
 
 
