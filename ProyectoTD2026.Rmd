@@ -28,7 +28,7 @@ El conjunto de datos utilizado contiene información anonimizada sobre las inter
 
 - El data frame contiene una columna de tipo "data time", asi que transformamos su formato a "%d/%m/%y, %H:%M:%S".
 
-- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien
+- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien, @ref(tab:tabla-logs)
 
 ```{r}
 
