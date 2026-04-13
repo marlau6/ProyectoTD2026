@@ -28,13 +28,15 @@ El conjunto de datos utilizado contiene información anonimizada sobre las inter
 
 - El data frame contiene una columna de tipo "data time", asi que transformamos su formato a "%d/%m/%y, %H:%M:%S".
 
+- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien
+
 ```{r}
 
 library(readr)
+library(knitr)
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
-head(logs_df, 5)
-
+knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
 
 ```{r}
