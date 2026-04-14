@@ -3,10 +3,10 @@ title: "ProyectoTD"
 author: "Miriam Díaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
 date: "`r Sys.Date()`"
 output:
-  bookdown::pdf_document2:
+  bookdown::html_document2:
     fig_caption: yes
     df_print: kable
-  bookdown::html_document2:
+  bookdown::pdf_document2:
     fig_caption: yes
     df_print: kable
 lang: es
@@ -65,3 +65,20 @@ ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = 
 ```
 
 Como se observa en la figura \@ref(fig:figura-1), mostramos los datos de eventos en el Aula Virtual.
+
+```{r}
+#Figura 4: Análisis de la actividad por dia de la semana
+
+logs_df$nombre_dia <- weekdays(logs_df$Hora)
+logs_df$nombre_dia <- tolower(logs_df$nombre_dia)
+orden_semana <-c("monday","tuesday","wednesday","thursday","friday","saturday","sunday")
+logs_df$nombre_dia <- factor(logs_df$nombre_dia, levels = orden_semana)
+library(ggplot2)
+ggplot(logs_df, aes(x=nombre_dia)) +
+  geom_bar(fill="red")+
+  labs(x="Día de la semana",y= "Número de eventos")+
+  theme_minimal()
+
+#Como se muestra en la gráfica la actividad máxima es el miércoles, descendiendo brutalmente el fin de semana.
+```
+
