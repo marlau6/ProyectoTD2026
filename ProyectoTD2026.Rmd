@@ -10,15 +10,6 @@ output:
     fig_caption: yes
     df_print: kable
 lang: es
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{fancyhdr}
-  - \usepackage{caption}
-  - \addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
-  - \pagestyle{fancy}
-  - \fancyhf{}
-  - \renewcommand{\headrulewidth}{0.5pt}
-  - \renewcommand{\footrulewidth}{0.4pt}
 ---
 
 ```{r setup, include=FALSE}
@@ -39,17 +30,24 @@ El objetivo principal de este proyecto es analizar y explorar el comportamiento 
 
 El conjunto de datos utilizado contiene información anonimizada sobre las interacciones realizadas en la plataforma, por tanto permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
 
+# Carga de librerías
+```{r}
+library(readr)
+library(knitr)
+library(ggplot2)
+
+```
+
+
 # Importación de los datos
 - Mediante la libreria readr importamos el archivo csv con read_csv.
 
 - El data frame contiene una columna de tipo "data time", asi que transformamos su formato a "%d/%m/%y, %H:%M:%S".
 
-- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien, tabla \@ref(tab:tabla-logs)
+- Creamos una tabla con los 5 primeros logs \@ref(tab:tabla-logs) para comprobar si la exportación ha salido bien, tabla
 
 ```{r tabla-logs, tab.cap= "Tabla"}
 
-library(readr)
-library(knitr)
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
@@ -58,7 +56,6 @@ knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora"}
 # Figura 1: Actividad por hora del dia
 
-library(ggplot2)
 logs_df$hora <- format(logs_df$Hora, "%H")
 
 ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
@@ -66,20 +63,20 @@ ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = 
 
 Como se observa en la figura \@ref(fig:figura-1), mostramos los datos de eventos en el Aula Virtual.
 
-```{r figura-4, fig.cap="Análisis de la actividad durante la semana"}
+
+
+```{r figura-2, fig.cap="Análisis de la actividad durante la semana"}
 #Figura 4: Análisis de la actividad por dia de la semana
 
-logs_df$nombre_dia <- weekdays(logs_df$Hora)
-logs_df$nombre_dia <- tolower(logs_df$nombre_dia)
-orden_semana <-c("monday","tuesday","wednesday","thursday","friday","saturday","sunday")
-logs_df$nombre_dia <- factor(logs_df$nombre_dia, levels = orden_semana)
-library(ggplot2)
+logs_df$nombre_dia <- as.integer(format(logs_df$Hora, "%u"))
+etiquetas <- c("lunes","martes","miércoles","jueves","viernes","sábado","domingo")
+logs_df$nombre_dia <- factor(logs_df$nombre_dia, levels = 1:7, labels = etiquetas)
+
 ggplot(logs_df, aes(x=nombre_dia)) +
   geom_bar(fill="red")+
   labs(x="Día de la semana",y= "Número de eventos")+
   theme_minimal()
 
-#Como se muestra en la gráfica la actividad máxima es el miércoles, descendiendo brutalmente el fin de semana.
 ```
 
-Como se observa en la figura \@ref(fig:figura-4), el día con mayor actividad es el miércoles mientras que el fin de semana se ve un descenso claro.
+Como se observa en la figura \@ref(fig:figura-2), el día con mayor actividad es el miércoles mientras que el fin de semana se ve un descenso claro.
