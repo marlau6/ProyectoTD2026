@@ -44,9 +44,9 @@ El conjunto de datos utilizado contiene información anonimizada sobre las inter
 
 - El data frame contiene una columna de tipo "data time", asi que transformamos su formato a "%d/%m/%y, %H:%M:%S".
 
-- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien, @ref(tab:tabla-logs)
+- Creamos una tabla con los 5 primeros logs para comprobar si la exportación ha salido bien, tabla \@ref(tab:tabla-logs)
 
-```{r}
+```{r tabla-logs, tab.cap= "Tabla"}
 
 library(readr)
 library(knitr)
@@ -55,7 +55,7 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
 
-```{r figura-1}
+```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora"}
 # Figura 1: Actividad por hora del dia
 
 library(ggplot2)
