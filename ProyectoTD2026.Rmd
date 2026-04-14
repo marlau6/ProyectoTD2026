@@ -2,7 +2,23 @@
 title: "ProyectoTD"
 author: "Miriam Díaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    df_print: kable
+  bookdown::html_document2:
+    fig_caption: yes
+    df_print: kable
+lang: es
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr}
+  - \usepackage{caption}
+  - \addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0.5pt}
+  - \renewcommand{\footrulewidth}{0.4pt}
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +55,7 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
 
-```{r}
+```{r figura-1}
 # Figura 1: Actividad por hora del dia
 
 library(ggplot2)
@@ -48,4 +64,4 @@ logs_df$hora <- format(logs_df$Hora, "%H")
 ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
 ```
 
-
+Como se observa en la figura \@ref(fig:figura-1), mostramos los datos de eventos en el Aula Virtual.
