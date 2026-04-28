@@ -49,11 +49,14 @@ library(ggplot2)
 
 # Importación de los datos
 
-Comemzamos con la importación mediante la librería readr.Al tratarse de un archivo csv utilizamos la función read_csv.
+Comemzamos con la importación mediante la librería readr.
+Al tratarse de un archivo csv utilizamos la función read_csv.
 
 Observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
 
-En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos, lo que permite comprobar la correcta importación y estructura de las variables. Se observa que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada.
+En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos, lo que permite comprobar la correcta importación y estructura de las variables. 
+
+Se observa que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada.
 
 ```{r tabla-logs, tab.cap= "Tabla"}
 
@@ -61,6 +64,10 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
+
+Como se observa en la Figura \@ref(fig:figura-1), la actividad en el Aula Virtual no es uniforme a lo largo del día. 
+
+Se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionado con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos o hábitos de estudio de los estudiantes.
 
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora"}
 # Figura 1: Actividad por hora del dia
@@ -70,9 +77,21 @@ logs_df$hora <- format(logs_df$Hora, "%H")
 ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
 ```
 
-Como se observa en la figura \@ref(fig:figura-1), mostramos los datos de eventos en el Aula Virtual.
+# Análisis exploratorio de los datos
 
+En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
 
+Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
+
+Deseamos conocer el día con mayor actividad y el día que menos.
+
+En la Figura \@ref(fig:figura-2) se muestra la distribución de la actividad a lo largo de la semana. 
+
+Se observa un ascenso claro durante la mitad de semana, mientras que durante el fin de semana la actividad disminuye notablemente.
+
+El día con mayor actividad es el miércoles y el día con menor actividad es el sábado.
+
+Esto podría identificar un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico.
 
 ```{r figura-2, fig.cap="Análisis de la actividad durante la semana"}
 #Figura 4: Análisis de la actividad por dia de la semana
@@ -88,4 +107,4 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ```
 
-Como se observa en la figura \@ref(fig:figura-2), el día con mayor actividad es el miércoles mientras que el fin de semana se ve un descenso claro.
+
