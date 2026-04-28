@@ -20,7 +20,6 @@ header-includes:
   - \renewcommand{\headrulewidth}{0.5pt}
   - \renewcommand{\footrulewidth}{0.4pt}
 ---
----
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -40,8 +39,8 @@ El objetivo principal de este proyecto es analizar y explorar el comportamiento 
 
 El conjunto de datos utilizado contiene información anonimizada sobre las interacciones realizadas en la plataforma, por tanto permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
 
+```{r, include = FALSE}
 # Carga de librerías
-```{r}
 library(readr)
 library(knitr)
 library(ggplot2)
