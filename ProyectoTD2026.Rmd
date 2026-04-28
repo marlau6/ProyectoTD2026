@@ -143,3 +143,10 @@ knitr::kable(head(contextos_frecuentes, 10),
              caption = "Contextos con mayor actividad registrada")
 ```
 
+En la Tabla \@ref(tab:tabla-3) la actividad no se distribuye de forma genérica, sino que se concentra en puntos clave.
+
+El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que representa la navegación general. 
+
+Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
+
+Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
