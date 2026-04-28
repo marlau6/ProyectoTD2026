@@ -44,6 +44,7 @@ El conjunto de datos utilizado contiene información anonimizada sobre las inter
 library(readr)
 library(knitr)
 library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -107,4 +108,38 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ```
 
+Siguiendo en la línea de mayor actividad, es interesante también conocer qué curso de la asignatura se visita con mayor frecuencia.
+
+Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas tales como ver el curso, visualizar el estado de la entrega entre otras.
+
+```{r tabla-2, fig.cap="Análisis de las actividades realizadas"}
+
+actividades_frecuentes <- logs_df %>%
+  group_by(`Nombre evento`) %>%
+  summarise(Frecuencia = n()) %>%
+  arrange(desc(Frecuencia))
+
+knitr::kable(head(actividades_frecuentes, 10), 
+             caption = "Eventos más frecuentes en el Aula Virtual")
+
+```
+
+
+En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes registrados en la plataforma.  
+
+Se observa que los eventos más utilizados corresponden a "Módulo de curso visto","Curso visto" "Usuario calificado" y "Se ha visualizado el estado de la entrega", lo que indica que los usuarios emplean principalmente el Aula Virtual para consultar contenido, entregar tareas y revisar sus calificaciones.
+
+
+Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
+
+```{r tabla-3, fig.cap="Contexto de las actividades"}
+
+contextos_frecuentes <- logs_df %>%
+  group_by(`Contexto del evento`) %>%
+  summarise(Total_Eventos = n()) %>%
+  arrange(desc(Total_Eventos))
+
+knitr::kable(head(contextos_frecuentes, 10), 
+             caption = "Contextos con mayor actividad registrada")
+```
 
