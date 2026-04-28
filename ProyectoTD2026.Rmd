@@ -56,14 +56,14 @@ library(ggplot2)
 
 - Creamos una tabla con los 5 primeros logs \@ref(tab:tabla-logs) para comprobar si la exportación ha salido bien, tabla
 
-```{r tabla-logs, tab.cap= "Tabla"}
+```{r tabla-logs, tab.cap= "Tabla", include = FALSE}
 
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
 
-```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora"}
+```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", include = FALSE}
 # Figura 1: Actividad por hora del dia
 
 logs_df$hora <- format(logs_df$Hora, "%H")
@@ -75,7 +75,7 @@ Como se observa en la figura \@ref(fig:figura-1), mostramos los datos de eventos
 
 
 
-```{r figura-2, fig.cap="Análisis de la actividad durante la semana"}
+```{r figura-2, fig.cap="Análisis de la actividad durante la semana", include = FALSE}
 #Figura 4: Análisis de la actividad por dia de la semana
 
 logs_df$nombre_dia <- as.integer(format(logs_df$Hora, "%u"))
