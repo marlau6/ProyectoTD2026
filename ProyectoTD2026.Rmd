@@ -44,16 +44,16 @@ El conjunto de datos utilizado contiene información anonimizada sobre las inter
 library(readr)
 library(knitr)
 library(ggplot2)
-
 ```
 
 
 # Importación de los datos
-- Mediante la libreria readr importamos el archivo csv con read_csv.
 
-- El data frame contiene una columna de tipo "data time", asi que transformamos su formato a "%d/%m/%y, %H:%M:%S".
+Comemzamos con la importación mediante la librería readr.Al tratarse de un archivo csv utilizamos la función read_csv.
 
-- Creamos una tabla con los 5 primeros logs \@ref(tab:tabla-logs) para comprobar si la exportación ha salido bien, tabla
+Observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
+
+En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos, lo que permite comprobar la correcta importación y estructura de las variables. Se observa que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada.
 
 ```{r tabla-logs, tab.cap= "Tabla"}
 
