@@ -150,3 +150,19 @@ El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que rep
 Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
 Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
+
+Ahora que conocemos cuales son las actividades más usadas, es interesante saber también cuál es la media diaria de la realización de las distintas actividades.
+
+```{r tabla-4, fig.cap= "Media diaria de las actividades "}
+
+niveles <- c(unique(logs_df$`Nombre evento`))
+
+media_actividades <- logs_df %>% group_by (nombre_dia) %>% mutate(actividades_num= as.numeric(factor(`Nombre evento`, levels = niveles))) %>% summarise(media= mean(actividades_num, na.rm= TRUE))
+
+
+knitr::kable(head(media_actividades), 
+             caption = "Media de las distintas actividades del curso")
+```
+
+
+Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos igual excepto en sábado que es muy baja y el martes que es más elevada.
