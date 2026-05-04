@@ -182,5 +182,6 @@ mas_activos <- logs_df %>%
 
 knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
 ```
+El análisis de la actividad por usuario muestra una alta participación general destacando especialmetne al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
