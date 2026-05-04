@@ -19,6 +19,8 @@ header-includes:
   - \fancyhf{}
   - \renewcommand{\headrulewidth}{0.5pt}
   - \renewcommand{\footrulewidth}{0.4pt}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -162,7 +164,23 @@ media_actividades <- logs_df %>% group_by (nombre_dia) %>% mutate(actividades_nu
 
 knitr::kable(head(media_actividades), 
              caption = "Media de las distintas actividades del curso")
+
 ```
 
 
 Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos igual excepto en sábado que es muy baja y el martes que es más elevada.
+
+
+
+
+```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
+mas_activos <- logs_df %>%
+  group_by(`Nombre completo del usuario`) %>%
+  summarise(Interacciones= n()) %>%
+  arrange(desc(Interacciones)) %>%
+  head (10) #Para los 10 primeros
+
+knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
+```
+
+
