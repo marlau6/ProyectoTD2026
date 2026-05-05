@@ -1,5 +1,5 @@
 ---
-title: "ProyectoTD"
+title: "Análisis de logs en el aula virtual"
 author: "Miriam Díaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
 date: "`r Sys.Date()`"
 output:
@@ -27,11 +27,11 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# Mini Proyecto 2026
+# Mini Proyecto 2026 {.unnumbered}
 
-### Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025
+### Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025 {.unnumbered}
 
-##### Tratamiento de Datos. Grado en Ciencia de Datos- UV
+##### Tratamiento de Datos. Grado en Ciencia de Datos- UV {.unnumbered}
 
 # Introducción
 
@@ -68,6 +68,13 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
 ```
 
+
+# Análisis exploratorio de los datos
+
+En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
+
+Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
+
 Como se observa en la Figura \@ref(fig:figura-1), la actividad en el Aula Virtual no es uniforme a lo largo del día. 
 
 Se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionado con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos o hábitos de estudio de los estudiantes.
@@ -79,12 +86,6 @@ logs_df$hora <- format(logs_df$Hora, "%H")
 
 ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
 ```
-
-# Análisis exploratorio de los datos
-
-En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
-
-Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
 
 Deseamos conocer el día con mayor actividad y el día que menos.
 
