@@ -125,9 +125,6 @@ print(relacion_ip)
 
 
 
-
-
-
 ## Modelación de los datos
 
 En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
@@ -155,6 +152,9 @@ Se observa un ascenso claro durante la mitad de semana, mientras que durante el 
 El día con mayor actividad es el miércoles y el día con menor actividad es el sábado.
 
 Esto podría identificar un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico.
+
+En respuesta a la pregunta 5, en relación a la hora del día en la que se conectan más estudiantes, y tal y como se observa en la Figura \@ref(fig:figura-1), la actividad varía significativamente. Los picos más altos de eventos se encuentran en las horas centrales de la mañana y de la tarde, coincidiendo con los horarios de las clases y los momentos de estudio, mientras que durante la madrugada la actividad es prácticamente nula.
+
 
 ```{r figura-2, fig.cap="Análisis de la actividad durante la semana"}
 #Figura 4: Análisis de la actividad por dia de la semana
@@ -217,20 +217,35 @@ Ahora que conocemos cuales son las actividades más usadas, es interesante saber
 
 ```{r tabla-4, fig.cap= "Media diaria de las actividades "}
 
-niveles <- c(unique(logs_df$nombre_evento))
+media_actividades <- logs_df %>%
+  mutate(fecha = as.Date(Hora)) %>%
+  group_by(fecha, nombre_dia) %>%
+  summarise(eventos_diarios = n(), .groups = "drop") %>%
+  group_by(nombre_dia) %>%
+  summarise(media = mean(eventos_diarios)) %>%
+  arrange(nombre_dia)
 
-media_actividades <- logs_df %>% group_by (nombre_dia) %>% mutate(actividades_num= as.numeric(factor(nombre_evento, levels = niveles))) %>% summarise(media= mean(actividades_num, na.rm= TRUE))
-
-
-knitr::kable(head(media_actividades), 
-             caption = "Media de las distintas actividades del curso")
+knitr::kable(media_actividades, caption = "Media de actividades por día de la semana")
 
 ```
 
 
-Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos igual excepto en sábado que es muy baja y el martes que es más elevada.
+Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos regular excepto en el sábado, que es muy baja, y el miércoles, que es más elevada.
 
+```{r tabla-5, fig.cap="Actividad mensual en el Aula Virtual"}
 
+logs_df$mes <- format(logs_df$Hora, "%m")
+
+actividad_mes <- logs_df %>%
+  group_by(mes) %>%
+  summarise(Total_Eventos = n()) %>%
+  arrange(mes)
+
+knitr::kable(actividad_mes, caption = "Actividad por meses para identificar periodos de exámenes")
+
+```
+
+En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase normal.
 
 
 ```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
@@ -242,6 +257,7 @@ mas_activos <- logs_df %>%
 
 knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
 ```
+
 El análisis de la actividad por usuario muestra una alta participación general destacando especialmetne al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
