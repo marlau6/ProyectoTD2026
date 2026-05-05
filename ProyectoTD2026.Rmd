@@ -47,6 +47,7 @@ library(readr)
 library(knitr)
 library(ggplot2)
 library(dplyr)
+library(tibble)
 ```
 
 
@@ -65,11 +66,69 @@ Se observa que cada registro corresponde a un evento en el Aula Virtual, incluye
 
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
+
 knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
+
+
 ```
 
 
 # Análisis exploratorio de los datos
+
+## Inspección de los datos
+
+
+```{r include = FALSE}
+# Dimensiones del data frame
+dim(logs_df) # 109746 registros y 9 columnas
+
+# Tipos de variables
+glimpse(logs_df) #Columnas con nombres que pueden ser problemáticos (espacios y accentos) y clases no adecuadas.
+
+
+#Cambiamos los nombres potencialmente problemáticos
+logs_df <- logs_df %>% rename( nombre_usuario = "Nombre completo del usuario", usuario_afectado = "Usuario afectado", contexto = "Contexto del evento", nombre_evento = "Nombre evento", descripcion = "Descripción", ip = "Dirección IP")
+
+#Visualizamos las respuestas de las columnas que sospechamos pueden ser factores
+table(logs_df$Componente)
+table(logs_df$nombre_evento)
+table(logs_df$Origen)
+
+#Pasamos a clase factor sin ordenar las columnas anteriores
+logs_df <- logs_df %>% mutate(Componente = as.factor(Componente), nombre_evento = as.factor(nombre_evento), Origen = as.factor(Origen))
+
+#Contamos el numero de NAs que hay en total.
+sum(is.na(logs_df)) 
+#Hay 72203 registros con NAs
+#En el 65.79% del data frame hay NAs
+
+#Veamos porque:
+sum(is.na(logs_df$usuario_afectado)) 
+#69346 de los 72203 NAs (96.04%) están en la columna "usuario_afectado". Estos son justificables ya que se pone NA cuando un evento no afecta a otro usuario.
+
+sum(is.na(registros_con_nas$ip))
+#2857 de los 72203 NAs (4.12%) están en la columna "usuario_afectado".
+
+#Vemos la relacion de NAs en ip con la columna componente.
+relacion_ip <- logs_df %>%
+  group_by(Componente) %>%
+  summarise(sin_ip = sum(is.na(ip))) %>% filter(sin_ip != 0)
+#Vemos estos resultados:
+#Asistencia	7		
+#Cuestionario	83		
+#Papelera de reciclaje	82		
+#Sistema	2685
+
+print(relacion_ip)
+
+```
+
+
+
+
+
+
+## Modelación de los datos
 
 En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
 
