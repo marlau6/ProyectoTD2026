@@ -11,6 +11,10 @@ output:
     df_print: kable
 lang: es
 header-includes:
+  - \usepackage{float}
+  - \makeatletter
+  - \def\fps@table{H}
+  - \makeatother
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \usepackage{caption}
@@ -33,13 +37,18 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ##### Tratamiento de Datos. Grado en Ciencia de Datos- UV {.unnumbered}
 
-# Introducción
+# Introducción.
 
-Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
+  Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
 
-El objetivo principal de este proyecto es analizar y explorar el comportamiento de los usuarios de la plataforma, identificando patrones de uso, frecuencia de acceso y posibles relaciones entre variables 
+  El objetivo principal de este proyecto es analizar y explorar el comportamiento de los usuarios de la plataforma, identificando patrones de uso, frecuencia de acceso y posibles relaciones entre variables.
 
-El conjunto de datos utilizado contiene información anonimizada sobre las interacciones realizadas en la plataforma, por tanto permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
+  El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
+
+## Carga de librerías
+  
+  Para empezar, se cargan todas las librerías que se gastarán durante las distintas fases del trabajo.
+  
 
 ```{r, include = FALSE}
 # Carga de librerías
@@ -51,43 +60,39 @@ library(tibble)
 ```
 
 
-# Importación de los datos
+## Importación de los datos
 
-Comemzamos con la importación mediante la librería readr.
-Al tratarse de un archivo csv utilizamos la función read_csv.
+  Comemzamos con la importación del fichero "logs_moodle_anon.csv" incluido en la carpeta "data" mediante la librería readr.
 
-Observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
-
-En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos, lo que permite comprobar la correcta importación y estructura de las variables. 
-
-Se observa que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada.
-
-```{r tabla-logs, tab.cap= "Tabla"}
-
+  Al tratarse de un archivo csv utilizamos la función read_csv, con la cual podemos cambiar la clase de las columnas que necesitemos, a primera vista, para que no sea mas fácil trabajar con ellas. Por ejemplo, observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
+  
+```{r importacion_datos, include = FALSE}
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
     col_types = cols(Hora = col_datetime(format = "%d/%m/%y, %H:%M:%S")))
 
-knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs")
-
-
 ```
 
-
-# Análisis exploratorio de los datos
-
 ## Inspección de los datos
+  
+  Aunque la librería read_csv nos proporciona la opción de importar el fichero con las clases que queramos, después de importarlo revisamos el data frame mediante una inspección de datos. 
+  En esta, vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas. También, consideramos que algunos nombres de columnas, que contienen espacios y accentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
 
-
-```{r include = FALSE}
+```{r cambio_nombres, include = FALSE}
 # Dimensiones del data frame
 dim(logs_df) # 109746 registros y 9 columnas
 
-# Tipos de variables
-glimpse(logs_df) #Columnas con nombres que pueden ser problemáticos (espacios y accentos) y clases no adecuadas.
 
+glimpse(logs_df) #Columnas con nombres que pueden ser problemáticos (espacios y accentos)
 
 #Cambiamos los nombres potencialmente problemáticos
 logs_df <- logs_df %>% rename( nombre_usuario = "Nombre completo del usuario", usuario_afectado = "Usuario afectado", contexto = "Contexto del evento", nombre_evento = "Nombre evento", descripcion = "Descripción", ip = "Dirección IP")
+
+```
+
+  Además, viendo los datos de las columnas "Componente", "nombre_evento" y "Origen" consideramos que podrían ser combertidos a factores sin orden. Ya que descubrimos que las respuestas estan limitadas.
+
+```{r factorizar_cols, include = FALSE}
+glimpse(logs_df) #clases no adecuadas
 
 #Visualizamos las respuestas de las columnas que sospechamos pueden ser factores
 table(logs_df$Componente)
@@ -96,7 +101,34 @@ table(logs_df$Origen)
 
 #Pasamos a clase factor sin ordenar las columnas anteriores
 logs_df <- logs_df %>% mutate(Componente = as.factor(Componente), nombre_evento = as.factor(nombre_evento), Origen = as.factor(Origen))
+```
 
+  Una vez ya arreglados los nombres y clases de las columnas, observamos cuales nos seran útiles para la realización del proyecto. En este caso todas, en la tabla  \@ref(tab:tabla-variables) vemos el nombre de la variable y su descripción.
+  
+```{r tabla-variables, tab.cap= "Tabla"}
+descripcion <- data.frame(
+  Variable = colnames(logs_df),
+  Descripcion = c(
+    "Marca temporal del evento (fecha y hora)",
+    "Nombre anonimizado del usuario que realizó la acción",
+    "Usuario afectado por la acción (NA si no aplica)",
+    "Contexto del evento dentro del aula virtual",
+    "Componente de Moodle implicado en el evento",
+    "Nombre del tipo de evento registrado",
+    "Descripción detallada de la acción realizada",
+    "Origen del acceso (web, cli, etc.)", "Dirección IP del usuario (IPv4 o IPv6)"))
+
+knitr::kable(descripcion,  caption = "Descripción de las variables del dataset", col.names = c("Variable", "Descripción"), booktabs = TRUE)
+```
+
+## Análisis de missing data en nuestro data frame
+
+  En primer lugar, calculamos el numero de registros que contienen al menos un NA en cualquier columna del conjunto. Asi descubrimos que el 65.79% de resgistros del data frame contiene algun "missing data". 
+  En segundo lugar, como este porcentaje es muy preocupante, calculamos cuantos datos faltantes se corresponden a la columna "usuario_afectado", ya que los NAs de esta columna están justificados (NA = ningun usuario afectado por el evento).
+  En tercer lugar, hemos visto que el 96.04% de los datos que faltan estan en la columna usuario_afectado. Pero, el resto de "missing data" se encuentra en la columna ip.
+  Finalmente, planteamos dos hipotesis: los NAs, de la columna ip, pueden estar relacionados con la columna "Complemento" o con la columna "Origen". Para saber cual hipotesis es la correcta, hemos analizado analizado las columnas y hemos visto que, en efecto, los datos que faltan de la columna "ip" se deben a que todos los eventos tienen origen "cli", es decir, estan automatizados por el servidor, así que no utilizan ip.
+  
+```{r inspeccion_datos, include = FALSE}
 #Contamos el numero de NAs que hay en total.
 sum(is.na(logs_df)) 
 #Hay 72203 registros con NAs
@@ -106,29 +138,38 @@ sum(is.na(logs_df))
 sum(is.na(logs_df$usuario_afectado)) 
 #69346 de los 72203 NAs (96.04%) están en la columna "usuario_afectado". Estos son justificables ya que se pone NA cuando un evento no afecta a otro usuario.
 
-sum(is.na(logs_df$ip))
+num_NAs_ip <- sum(is.na(logs_df$ip))
 #2857 de los 72203 NAs (4.12%) están en la columna "usuario_afectado".
 
 #Vemos la relacion de NAs en ip con la columna componente.
 relacion_ip <- logs_df %>%
   group_by(Componente) %>%
-  summarise(sin_ip = sum(is.na(ip))) %>% filter(sin_ip != 0)
-#Vemos estos resultados:
-#Asistencia	7		
-#Cuestionario	83		
-#Papelera de reciclaje	82		
-#Sistema	2685
-
+  summarise(sin_ip = sum(is.na(ip)), con_ip = sum(!is.na(ip))) %>% filter(sin_ip != 0)
 print(relacion_ip)
+#Vemos estos resultados:
+#Papelera de reciclaje (Borrado automatico que no utiliza ip) 82		
+#Sistema (Tareas automáticas del servidor que no utilizan ip) 2685
+#Asistencia 7		
+#Cuestionario	83
+
+#Asistencia y Cuestionario?
+table(logs_df$Origen) 
+#el numero de registros donde el Origen es "cli" es el mismo número de NAs en ip
+cli_na <- logs_df %>% filter(Origen == "cli" & is.na(ip))
+nrow(cli_na) == num_NAs_ip
+#Hemos filtrado el data frame de forma que nos muestre los registros donde los NAs en ip tienen un origen "cli". El resultado muestra que son todos, asi que los 2857 NAs corresponden a tareas automaticas del servidor que no utilizan ip.
+
+```
+  
+En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos ya limpio, lo que nos permitirá empezar a explorar relaciones entre datos. 
+
+```{r tabla-logs, tab.cap= "Tabla"}
+knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs", booktabs = TRUE)
 
 ```
 
 
-
-
-
-
-## Modelación de los datos
+# Análisis exploratorio de los datos
 
 En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
 
