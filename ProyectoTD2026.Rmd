@@ -106,7 +106,7 @@ sum(is.na(logs_df))
 sum(is.na(logs_df$usuario_afectado)) 
 #69346 de los 72203 NAs (96.04%) están en la columna "usuario_afectado". Estos son justificables ya que se pone NA cuando un evento no afecta a otro usuario.
 
-sum(is.na(registros_con_nas$ip))
+sum(is.na(logs_df$ip))
 #2857 de los 72203 NAs (4.12%) están en la columna "usuario_afectado".
 
 #Vemos la relacion de NAs en ip con la columna componente.
@@ -177,7 +177,7 @@ Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas
 ```{r tabla-2, fig.cap="Análisis de las actividades realizadas"}
 
 actividades_frecuentes <- logs_df %>%
-  group_by(`Nombre evento`) %>%
+  group_by(nombre_evento) %>%
   summarise(Frecuencia = n()) %>%
   arrange(desc(Frecuencia))
 
@@ -197,7 +197,7 @@ Para complementar el análisis anterior, resulta interesante analizar en qué co
 ```{r tabla-3, fig.cap="Contexto de las actividades"}
 
 contextos_frecuentes <- logs_df %>%
-  group_by(`Contexto del evento`) %>%
+  group_by(contexto) %>%
   summarise(Total_Eventos = n()) %>%
   arrange(desc(Total_Eventos))
 
@@ -217,9 +217,9 @@ Ahora que conocemos cuales son las actividades más usadas, es interesante saber
 
 ```{r tabla-4, fig.cap= "Media diaria de las actividades "}
 
-niveles <- c(unique(logs_df$`Nombre evento`))
+niveles <- c(unique(logs_df$nombre_evento))
 
-media_actividades <- logs_df %>% group_by (nombre_dia) %>% mutate(actividades_num= as.numeric(factor(`Nombre evento`, levels = niveles))) %>% summarise(media= mean(actividades_num, na.rm= TRUE))
+media_actividades <- logs_df %>% group_by (nombre_dia) %>% mutate(actividades_num= as.numeric(factor(nombre_evento, levels = niveles))) %>% summarise(media= mean(actividades_num, na.rm= TRUE))
 
 
 knitr::kable(head(media_actividades), 
@@ -235,7 +235,7 @@ Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o
 
 ```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
 mas_activos <- logs_df %>%
-  group_by(`Nombre completo del usuario`) %>%
+  group_by(nombre_usuario) %>%
   summarise(Interacciones= n()) %>%
   arrange(desc(Interacciones)) %>%
   head (10) #Para los 10 primeros
