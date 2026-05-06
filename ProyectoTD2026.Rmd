@@ -332,3 +332,31 @@ knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad
 El análisis de la actividad por usuario muestra una alta participación general destacando especialmetne al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
+Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones.
+Los alumnos asisten a clase en las horas establecidas, pero cuál es el horario de estudio de estos. Vamos a ver cuántos de ellos estudian de noche.
+
+```{r tabla-6, fig.cap="Análisis de estudiantes con hábitos de estudio nocturno"}
+
+logs_df$hora_num <- as.numeric(format(logs_df$Hora, "%H"))
+
+usuarios_madrugada <- logs_df %>%
+  filter(hora_num >= 0 & hora_num < 6) %>%
+  summarise(n_usuarios = n_distinct(nombre_usuario)) %>%
+  pull(n_usuarios) 
+
+usuarios_totales <- n_distinct(logs_df$nombre_usuario)
+porcentaje_nocturno <- (usuarios_madrugada / usuarios_totales) * 100
+
+tabla_madrugada <- data.frame(
+  Categoria = c("Usuarios totales", "Usuarios nocturnos", "Porcentaje"),
+  Total = c(usuarios_totales, usuarios_madrugada, round(porcentaje_nocturno, 2)))
+
+
+knitr::kable(tabla_madrugada, caption = "Análisis de estudiantes con hábitos de estudio nocturno",booktabs = TRUE, col.names = c("Categoria", "Total"),align = "lr")
+
+```
+
+Como se muestra en Tabla \@ref(tab:tabla-6) hay un 75.86% de los alumnos que alguna vez han usado el Aula Virtual en la franja horaria entre las 12 de la noche y las 6 de la mañana. Hay un total de 87 usuarios en el curso y 66 han accedido en esas horas.
+
+Este dato muestra que el estudio nocturno no es un hábito aislado de unos pocos alumnos, sino una práctica recurrente entre un porcentaje muy alto de la clase, lo que demuestra la necesidad de disponer de materiales accesibles de forma autónoma en cualquier momento.
+
