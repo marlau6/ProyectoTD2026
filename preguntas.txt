@@ -16,4 +16,8 @@ Pregunta 8
 ¿Hay actividades de las que se podría prescindir por su bajo uso?
 Pregunta 9
 ¿Qué usuarios son más activos?
+Pregunta 10
+¿Qué porcentaje de la clase estudia de madrugada?
+Pregunta 11
+
 ...
