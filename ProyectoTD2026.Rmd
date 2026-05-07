@@ -60,6 +60,8 @@ library(dplyr)
 library(tibble)
 library(tidyr)
 library(GGally)
+library(stringr)
+
 ```
 
 
@@ -234,7 +236,7 @@ Se observa un ascenso claro durante la mitad de semana, mientras que durante el 
 
 El día con mayor actividad es el miércoles y el día con menor actividad es el sábado.
 
-Esto podría identificar un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico.
+Esto podría identificar un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
 
 En respuesta a la pregunta 5, en relación a la hora del día en la que se conectan más estudiantes, y tal y como se observa en la Figura \@ref(fig:figura-1), la actividad varía significativamente. Los picos más altos de eventos se encuentran en las horas centrales de la mañana y de la tarde, coincidiendo con los horarios de las clases y los momentos de estudio, mientras que durante la madrugada la actividad es prácticamente nula.
 
@@ -371,4 +373,73 @@ knitr::kable(tabla_madrugada, caption = "Análisis de estudiantes con hábitos d
 Como se muestra en Tabla \@ref(tab:tabla-6) hay un 75.86% de los alumnos que alguna vez han usado el Aula Virtual en la franja horaria entre las 12 de la noche y las 6 de la mañana. Hay un total de 87 usuarios en el curso y 66 han accedido en esas horas.
 
 Este dato muestra que el estudio nocturno no es un hábito aislado de unos pocos alumnos, sino una práctica recurrente entre un porcentaje muy alto de la clase, lo que demuestra la necesidad de disponer de materiales accesibles de forma autónoma en cualquier momento.
+
+\newpage
+
+Otro aspecto muy interesante sería conocer qué usuarios utilizan más el Aula Virtual con respecto a las distintas actividades del curso.
+
+```{r tabla-7, fig.cap="Usuarios mas activos"}
+top_usuarios <- logs_df %>%
+  group_by(nombre_evento, nombre_usuario) %>%
+  summarise(total = n()) %>%
+  arrange(nombre_evento, desc(total)) %>%
+  filter(total == max(total)) %>%
+  ungroup() %>%
+  arrange(desc(total))
+
+knitr::kable(top_usuarios,caption = "Usuarios más activos según el tipo de actividad")
+```
+
+
+En la Tabla \@ref(tab:tabla-7) se muestran los usuarios con mayor actividad para cada tipo de evento registrado en el Aula Virtual.
+
+Los resultados reflejan que algunos usuarios destacan especialmente en determinadas interacciones, como la visualización de contenidos, la realización de cuestionarios o la consulta de calificaciones, mostrando distintos patrones de uso de la plataforma.
+
+Por último, una de las preguntas más relevantes en este análisis sería conocer si los alumnos realizan más entregas o visualizaciones en el curso cuando se marca Asistencia en el Aula Virtual, es decir, que asisten a clase.
+Para ello calcularemos usando la correlación de Spearman debido a que las variables analizadas no necesariamente siguen una distribución normal y pueden contener valores extremos.
+
+```{r tabla-8, fig.cap="relacion entre asistencia y actividad"}
+
+
+logs_df$fecha <- as.Date(logs_df$Hora)
+
+asistencia <- logs_df %>%
+  filter(str_detect(contexto,regex("Asistencia",ignore_case = TRUE))) %>%
+  group_by(fecha) %>%
+  summarise(asistencia = n())
+
+
+vistas <- logs_df %>%
+  filter(str_detect(nombre_evento,regex("visto|visualizado",ignore_case = TRUE))) %>%
+  group_by(fecha) %>%
+  summarise(vistas = n())
+
+
+entregas <- logs_df %>%
+  filter(str_detect(nombre_evento,regex("entrega|tarea",ignore_case = TRUE))) %>%
+  group_by(fecha) %>%
+  summarise(entregas = n())
+
+
+actividad <- asistencia %>%
+  left_join(vistas, by = "fecha") %>%
+  left_join(entregas, by = "fecha")
+
+
+cor_vistas <- cor(actividad$asistencia,actividad$vistas,use = "complete.obs",method = "spearman")
+
+cor_entregas <- cor(actividad$asistencia,actividad$entregas,use = "complete.obs",method ="spearman")
+
+
+tabla_cor <- data.frame(Relacion = c("Asistencia vs Vistas","Asistencia vs Entregas"),
+  Correlacion_Spearman = c(cor_vistas,cor_entregas))
+
+knitr::kable(tabla_cor,digits = 3,caption = "Correlación entre asistencia y actividad en Aula Virtual")
+```
+
+En la Tabla \@ref(tab:tabla-8) se muestra la correlación entre los registros de asistencia y distintos tipos de actividad en el Aula Virtual.
+
+Se observa una correlación positiva moderadamente alta entre la asistencia y las visualizaciones de contenido (\( \rho = 0.616 \)), lo que indica que los días con mayor asistencia suelen coincidir también con una mayor consulta de materiales y recursos de la plataforma.
+
+Por otro lado, la relación entre asistencia y entregas es positiva pero más débil (\( \rho = 0.359 \)). Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
