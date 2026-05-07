@@ -48,7 +48,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Carga de librerías
   
-\qquad Para empezar, se cargan todas las librerías que se gastarán durante las distintas fases del trabajo.
+\qquad Para empezar, se cargan todas las librerías que se utilizarán durante las distintas fases del trabajo.
   
 
 ```{r, include = FALSE}
@@ -67,9 +67,9 @@ library(stringr)
 
 ## Importación de los datos
 
-\qquad Comemzamos con la importación del fichero "logs_moodle_anon.csv" incluido en la carpeta "data" mediante la librería readr.
+\qquad Comenzamos con la importación del fichero "logs_moodle_anon.csv" incluido en la carpeta "data" mediante la librería readr.
 
-\qquad Al tratarse de un archivo csv utilizamos la función read_csv, con la cual podemos cambiar la clase de las columnas que necesitemos, a primera vista, para que no sea mas fácil trabajar con ellas. Por ejemplo, observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
+\qquad Al tratarse de un archivo csv utilizamos la función read_csv, con la cual podemos cambiar la clase de las columnas que necesitemos, a primera vista, para facilitar el trabajo posterior con las variables. Por ejemplo, observamos que el data frame contiene una columna de tipo "data time", así que transformamos su formato a "%d/%m/%y, %H:%M:%S".
   
 ```{r importacion_datos, include = FALSE}
 logs_df <- read_csv("data/logs_moodle_anon.csv", 
@@ -81,7 +81,7 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
   
 \qquad Aunque la librería read_csv nos proporciona la opción de importar el fichero con las clases que queramos, después de importarlo revisamos el data frame mediante una inspección de datos. 
 
-\qquad En esta, vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas. También, consideramos que algunos nombres de columnas, que contienen espacios y accentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
+\qquad En esta, vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas. También, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
 
 ```{r cambio_nombres, include = FALSE}
 # Dimensiones del data frame
@@ -95,7 +95,7 @@ logs_df <- logs_df %>% rename( nombre_usuario = "Nombre completo del usuario", u
 
 ```
 
-\qquad Además, viendo los datos de las columnas "Componente", "nombre_evento" y "Origen" consideramos que podrían ser convertimos a factores sin orden. Ya que descubrimos que las respuestas estan limitadas.
+\qquad Además, viendo los datos de las columnas "Componente", "nombre_evento" y "Origen" consideramos que podrían convertirse a factores sin orden. Ya que descubrimos que las respuestas están limitadas.
 
 ```{r factorizar_cols, include = FALSE}
 glimpse(logs_df) #clases no adecuadas
@@ -109,7 +109,7 @@ table(logs_df$Origen)
 logs_df <- logs_df %>% mutate(Componente = as.factor(Componente), nombre_evento = as.factor(nombre_evento), Origen = as.factor(Origen))
 ```
 
-\qquad Una vez ya arreglados los nombres y clases de las columnas, observamos cuales nos seran útiles para la realización del proyecto. En este caso todas, en la tabla \@ref(tab:tabla-variables) vemos el nombre de la variable y su descripción.
+\qquad Una vez ya arreglados los nombres y clases de las columnas, observamos cuáles nos serán útiles para la realización del proyecto. En este caso todas, en la tabla \@ref(tab:tabla-variables) vemos el nombre de la variable y su descripción.
   
 ```{r tabla-variables, tab.cap= "Tabla"}
 descripcion <- data.frame(
@@ -129,7 +129,7 @@ knitr::kable(descripcion,  caption = "Descripción de las variables del dataset"
 
 ## Análisis de missing data en nuestro data frame
 
-\qquad En primer lugar, calculamos el numero de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de resgistros del data frame contiene algun "missing data".
+\qquad En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
 
 
 ```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE}
@@ -137,10 +137,10 @@ registros_nas <- data.frame(Estado = c("NAs", "Correctos"), Total = c(sum(!compl
 
 registros_nas$Porcentaje <- registros_nas$Total / sum(registros_nas$Total) * 100
 
-ggplot(registros_nas, aes(x = Estado, y = Porcentaje, fill = Estado)) + geom_col(width = 0.6) + labs(y = "Porcentaje (%)") + scale_fill_manual(values = c("NAs" = "red", "Correctos" = "green3"))
+ggplot(registros_nas, aes(x = Estado, y = Porcentaje, fill = Estado)) + geom_col(width = 0.6) + labs(y = "Porcentaje (%)") + scale_fill_manual(values = c("NAs" = "red", "Correctos" = "green3")) + theme_minimal()
 ```
   
-\qquad En segundo lugar, como este porcentaje es muy preocupante, visualizamos en la figura \@ref(fig:figura-ColsConNAs) cuantos datos faltantes hay por columna. Notamos que la mayoria de NAs se corresponden a la columna "usuario_afectado", ya que los NAs de esta columna están justificados (NA = ningun usuario afectado por el evento).
+\qquad En segundo lugar, como este porcentaje es muy preocupante, visualizamos en la figura \@ref(fig:figura-ColsConNAs) cuantos datos faltantes hay por columna. Notamos que la mayoría de NAs se corresponden a la columna "usuario_afectado", ya que los NAs de esta columna están justificados (NA = ningún usuario afectado por el evento).
 
 ```{r figura-ColsConNAs, fig.cap="Diferencia entre datos faltantes y correctos por columna", echo = FALSE}
 logs_na_df <- as.data.frame(is.na(logs_df))
@@ -152,12 +152,12 @@ grafico_resumen <- logs_na_df %>%
                names_to = "Estado", 
                values_to = "Porcentaje")
 
-ggplot(grafico_resumen, aes(x = columnas, y = Porcentaje, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + scale_fill_manual(values = c("NAs" = "red", "correctos" = "green3")) + labs(y = "Porcentaje (%)")
+ggplot(grafico_resumen, aes(x = columnas, y = Porcentaje, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + scale_fill_manual(values = c("NAs" = "red", "correctos" = "green3")) + labs(y = "Porcentaje (%)") + theme_minimal()
 ```
 
-\qquad En tercer lugar, hemos visto que el 97.8% de los datos que faltan estan en la columna usuario_afectado. Pero, el resto de "missing data" se encuentra en la columna ip.
+\qquad En tercer lugar, hemos visto que el 97.8% de los datos que faltan están en la columna usuario_afectado. Pero, el resto de "missing data" se encuentra en la columna ip.
   
-\qquad Finalmente, planteamos dos hipotesis: los NAs, de la columna ip, pueden estar relacionados con la columna "Complemento" o con la columna "Origen". Para saber cual hipotesis es la correcta, hemos analizado analizado las columnas y hemos visto que, en efecto, los datos que faltan de la columna "ip" se deben a que todos los eventos tienen origen "cli", es decir, estan automatizados por el servidor, así que no utilizan ip.
+\qquad Finalmente, planteamos dos hipótesis: los NAs, de la columna ip, pueden estar relacionados con la columna "Complemento" o con la columna "Origen". Para saber cual hipótesis es la correcta, hemos analizado  las columnas y hemos visto que, en efecto, los datos que faltan de la columna "ip" se deben a que todos los eventos tienen origen "cli", es decir, estan automatizados por el servidor, así que no utilizan ip.
   
 ```{r inspeccion_datos, include = FALSE}
 #Contamos el numero de NAs que hay en total.
@@ -218,14 +218,14 @@ Para ello, se emplean representaciones gráficas y medidas descriptivas que perm
 
 Como se observa en la Figura \@ref(fig:figura-1), la actividad en el Aula Virtual no es uniforme a lo largo del día. 
 
-Se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionado con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos o hábitos de estudio de los estudiantes.
+Se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos o hábitos de estudio de los estudiantes.
 
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora"}
 # Figura 1: Actividad por hora del dia
 
 logs_df$hora <- format(logs_df$Hora, "%H")
 
-ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora")
+ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = "Eventos", title = "Actividad en el Aula Virtual por hora") + theme_minimal()
 ```
 
 Deseamos conocer el día con mayor actividad y el día que menos.
@@ -255,7 +255,7 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ```
 
-Siguiendo en la línea de mayor actividad, es interesante también conocer qué curso de la asignatura se visita con mayor frecuencia.
+Siguiendo en la línea de mayor actividad, es interesante también conocer qué contenidos o recursos del Aula Virtual se utilizan con mayor frecuencia
 
 Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas tales como ver el curso, visualizar el estado de la entrega entre otras.
 
@@ -272,7 +272,7 @@ knitr::kable(head(actividades_frecuentes, 10),
 ```
 
 
-En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes registrados en la plataforma.  
+En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes registradas en la plataforma.  
 
 Se observa que los eventos más utilizados corresponden a "Módulo de curso visto","Curso visto" "Usuario calificado" y "Se ha visualizado el estado de la entrega", lo que indica que los usuarios emplean principalmente el Aula Virtual para consultar contenido, entregar tareas y revisar sus calificaciones.
 
@@ -292,7 +292,7 @@ knitr::kable(head(contextos_frecuentes, 10),
 
 En la Tabla \@ref(tab:tabla-3) la actividad no se distribuye de forma genérica, sino que se concentra en puntos clave.
 
-El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que representa la navegación general. 
+El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que representa la visualización general del curso. 
 
 Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
@@ -330,7 +330,7 @@ knitr::kable(actividad_mes, caption = "Actividad por meses para identificar peri
 
 ```
 
-En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase normal.
+En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase habitual.
 
 
 ```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
@@ -343,11 +343,11 @@ mas_activos <- logs_df %>%
 knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
 ```
 
-El análisis de la actividad por usuario muestra una alta participación general destacando especialmetne al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
+El análisis de la actividad por usuario muestra una alta participación general destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
 Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones.
-Los alumnos asisten a clase en las horas establecidas, pero cuál es el horario de estudio de estos. Vamos a ver cuántos de ellos estudian de noche.
+Los alumnos asisten a clase en las horas establecidas, pero cuáles son sus hábitos de estudio. Vamos a ver cuántos de ellos estudian de noche.
 
 ```{r tabla-6, fig.cap="Análisis de estudiantes con hábitos de estudio nocturno"}
 
@@ -381,13 +381,14 @@ Otro aspecto muy interesante sería conocer qué usuarios utilizan más el Aula 
 ```{r tabla-7, fig.cap="Usuarios mas activos"}
 top_usuarios <- logs_df %>%
   group_by(nombre_evento, nombre_usuario) %>%
-  summarise(total = n()) %>%
-  arrange(nombre_evento, desc(total)) %>%
+  summarise(total = n(), .groups = "drop") %>%
+  group_by(nombre_evento) %>%
   filter(total == max(total)) %>%
   ungroup() %>%
   arrange(desc(total))
 
-knitr::kable(top_usuarios,caption = "Usuarios más activos según el tipo de actividad")
+knitr::kable(head(top_usuarios,15),caption = "Usuarios más activos según el tipo de actividad")
+
 ```
 
 
@@ -439,7 +440,36 @@ knitr::kable(tabla_cor,digits = 3,caption = "Correlación entre asistencia y act
 
 En la Tabla \@ref(tab:tabla-8) se muestra la correlación entre los registros de asistencia y distintos tipos de actividad en el Aula Virtual.
 
-Se observa una correlación positiva moderadamente alta entre la asistencia y las visualizaciones de contenido (\( \rho = 0.616 \)), lo que indica que los días con mayor asistencia suelen coincidir también con una mayor consulta de materiales y recursos de la plataforma.
+Se observa una correlación positiva moderadamente alta entre la asistencia y las visualizaciones de contenido, cuyo valor es de 0.616; lo que indica que los días con mayor asistencia suelen coincidir también con una mayor consulta de materiales y recursos de la plataforma.
 
-Por otro lado, la relación entre asistencia y entregas es positiva pero más débil (\( \rho = 0.359 \)). Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
+Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
+
+Además de estudiar la actividad por horas o días de la semana, resulta interesante analizar cómo evoluciona el uso del Aula Virtual a lo largo del curso académico.
+
+Este análisis permite identificar periodos de mayor intensidad de actividad, posiblemente relacionados con entregas, cuestionarios o exámenes.
+
+```{r figura-4, fig.cap="evolucion temporal"}
+actividad_diaria <- logs_df %>%
+  group_by(fecha) %>%
+  summarise(eventos = n())
+
+ggplot(actividad_diaria,aes(x = fecha,y = eventos)) +geom_line(color= "lightblue") +
+  geom_point(color = "darkblue",size = 1.5) +
+  labs(title = "Evolución temporal de la actividad", x = "Fecha",y = "Número de eventos") + theme_minimal()
+```
+
+La Figura \@ref(fig:figura-4) muestra la evolución temporal de la actividad registrada en el Aula Virtual a lo largo del curso académico.
+
+Se observan distintos picos de actividad que coinciden con periodos de prácticas, cuestionarios y exámenes, mientras que durante vacaciones o periodos en los que no hay clase la interacción disminuye notablemente.
+
+# Conclusiones
+
+A partir del análisis realizado sobre los logs del Aula Virtual, se ha observado que:
+
+- La actividad de los usuarios sigue patrones claramente relacionados con el calendario académico.
+- Los días laborables presentan una actividad muy superior al fin de semana.
+- Los eventos más frecuentes están relacionados con la visualización del curso y la evaluación continua.
+- Existen usuarios con un nivel de interacción significativamente superior al resto.
+
+Además, se ha comprobado que los picos de actividad coinciden con periodos de prácticas, cuestionarios y exámenes, lo que confirma el uso intensivo de la plataforma como herramienta para la asignatura
