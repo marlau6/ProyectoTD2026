@@ -19,5 +19,7 @@ Pregunta 9
 Pregunta 10
 ¿Qué porcentaje de la clase estudia de madrugada?
 Pregunta 11
-
+¿Los días con más asistencia también tienen más vistas o entregas?
+Pregunta 12
+¿Qué usuarios son más activos según cada tipo de actividad?
 ...
