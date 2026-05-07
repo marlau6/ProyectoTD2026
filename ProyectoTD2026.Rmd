@@ -59,6 +59,7 @@ library(ggplot2)
 library(dplyr)
 library(tibble)
 library(tidyr)
+library(GGally)
 ```
 
 
@@ -132,7 +133,9 @@ knitr::kable(descripcion,  caption = "Descripción de las variables del dataset"
 ```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE}
 registros_nas <- data.frame(Estado = c("NAs", "Correctos"), Total = c(sum(!complete.cases(logs_df)), sum(complete.cases(logs_df))))
 
-ggplot(registros_nas, aes(x = Estado, y = Total, fill = Estado)) + geom_col(width = 0.6) + scale_fill_manual(values = c("NAs" = "red", "Correctos" = "green"))
+registros_nas$Porcentaje <- registros_nas$Total / sum(registros_nas$Total) * 100
+
+ggplot(registros_nas, aes(x = Estado, y = Porcentaje, fill = Estado)) + geom_col(width = 0.6) + labs(y = "Porcentaje (%)") + scale_fill_manual(values = c("NAs" = "red", "Correctos" = "green3"))
 ```
   
 \qquad En segundo lugar, como este porcentaje es muy preocupante, visualizamos en la figura \@ref(fig:figura-ColsConNAs) cuantos datos faltantes hay por columna. Notamos que la mayoria de NAs se corresponden a la columna "usuario_afectado", ya que los NAs de esta columna están justificados (NA = ningun usuario afectado por el evento).
@@ -140,15 +143,14 @@ ggplot(registros_nas, aes(x = Estado, y = Total, fill = Estado)) + geom_col(widt
 ```{r figura-ColsConNAs, fig.cap="Diferencia entre datos faltantes y correctos por columna", echo = FALSE}
 logs_na_df <- as.data.frame(is.na(logs_df))
 
-logs_na_df <- logs_na_df %>% pivot_longer(cols = colnames(logs_na_df), names_to = "columnas", values_to = "valores") %>% group_by(columnas) %>% summarise(NAs = sum(valores), correctos = sum(!valores))
+logs_na_df <- logs_na_df %>% pivot_longer(cols = colnames(logs_na_df), names_to = "columnas", values_to = "valores") %>% group_by(columnas) %>% summarise(NAs = sum(valores), correctos = sum(!valores)) %>% mutate(total = NAs + correctos, NAs = NAs / total * 100, correctos = correctos / total * 100)
 
 grafico_resumen <- logs_na_df %>%
   pivot_longer(cols = c(NAs, correctos), 
                names_to = "Estado", 
-               values_to = "Cantidad")
+               values_to = "Porcentaje")
 
-ggplot(grafico_resumen, aes(x = columnas, y = Cantidad, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
-
+ggplot(grafico_resumen, aes(x = columnas, y = Porcentaje, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + scale_fill_manual(values = c("NAs" = "red", "correctos" = "green3")) + labs(y = "Porcentaje (%)")
 ```
 
 \qquad En tercer lugar, hemos visto que el 97.8% de los datos que faltan estan en la columna usuario_afectado. Pero, el resto de "missing data" se encuentra en la columna ip.
@@ -189,14 +191,24 @@ nrow(cli_na) == num_NAs_ip
 ```
 
   
-En la Tabla \@ref(tab:tabla-logs) se muestran las primeras observaciones del conjunto de datos ya limpio, lo que nos permitirá empezar a explorar relaciones entre datos. 
+En la Tabla \@ref(tab:tabla-logs1) y \@ref(tab:tabla-logs2)se muestran las primeras observaciones del conjunto de datos ya limpio, lo que nos permitirá empezar a explorar relaciones entre datos. 
 
-```{r tabla-logs, tab.cap= "Tabla"}
-knitr::kable(head(logs_df, 5), caption = "Primeras filas del dataset de logs", booktabs = TRUE)
+```{r tabla-logs1, tab.cap= "Tabla"}
+logs_preview <- head(logs_df[,1:4], 5)
+logs_preview$contexto <- substr(logs_preview$contexto, 1, 20)
+knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
+```
+
+
+```{r tabla-logs2, tab.cap= "Tabla"}
+logs_preview <- head(logs_df[,5:9], 5)
+logs_preview$descripcion <- substr(logs_preview$descripcion, 1, 20)
+knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
 
 ```
 
 # Análisis exploratorio de los datos
+
 
 En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
 
