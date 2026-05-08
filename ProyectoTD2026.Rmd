@@ -287,6 +287,7 @@ Se observa que los eventos más utilizados corresponden a "Módulo de curso vist
 
 Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
 
+
 ```{r tabla-3, fig.cap="Contexto de las actividades", out.width='80%'}
 
 contextos_frecuentes <- logs_df %>%
@@ -329,6 +330,8 @@ Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o
 
 ## 2.5 Actividad mensual
 
+Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
+
 ```{r tabla-5, fig.cap="Actividad mensual en el Aula Virtual"}
 
 logs_df$mes <- format(logs_df$Hora, "%m")
@@ -346,6 +349,7 @@ En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos 
 
 ## 2.6 Usuarios más activos
 
+Además del análisis temporal de la actividad, también resulta relevante estudiar el nivel de participación de cada usuario. De este modo, se puede identificar qué estudiantes generan un mayor número de interacciones dentro del Aula Virtual.
 
 ```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
 mas_activos <- logs_df %>%
