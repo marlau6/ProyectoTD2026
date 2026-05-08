@@ -31,6 +31,8 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+\newpage
+
 # Mini Proyecto 2026 {.unnumbered}
 
 ### Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025 {.unnumbered}
@@ -306,6 +308,8 @@ El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que rep
 Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
 Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
+
+\newpage
 
 ## 2.4 Contextos con mayor actividad
 
