@@ -220,7 +220,7 @@ En esta sección se abordan distintas preguntas con el objetivo de profundizar e
 
 Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
 
-## 2.1 Actividad por horas
+## Actividad por horas
 
 Como se observa en la Figura \@ref(fig:figura-1), la actividad en el Aula Virtual no es uniforme a lo largo del día. 
 
@@ -261,7 +261,7 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ```
 
-## 2.2 Actividad semanal
+## Actividad semanal
 
 Siguiendo en la línea de mayor actividad, es interesante también conocer qué contenidos o recursos del Aula Virtual se utilizan con mayor frecuencia
 
@@ -284,7 +284,7 @@ En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes regis
 
 Se observa que los eventos más utilizados corresponden a "Módulo de curso visto","Curso visto" "Usuario calificado" y "Se ha visualizado el estado de la entrega", lo que indica que los usuarios emplean principalmente el Aula Virtual para consultar contenido, entregar tareas y revisar sus calificaciones.
 
-## 2.3 Eventos más frecuentes
+## Eventos más frecuentes
 
 
 Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
@@ -311,7 +311,7 @@ Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a cl
 
 \newpage
 
-## 2.4 Contextos con mayor actividad
+## Contextos con mayor actividad
 
 Ahora que conocemos cuales son las actividades más usadas, es interesante saber también cuál es la media diaria de la realización de las distintas actividades.
 
@@ -332,7 +332,7 @@ knitr::kable(media_actividades, caption = "Media de actividades por día de la s
 
 Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos regular excepto en el sábado, que es muy baja, y el miércoles, que es más elevada.
 
-## 2.5 Actividad mensual
+## Actividad mensual
 
 Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
 
@@ -351,7 +351,7 @@ knitr::kable(actividad_mes, caption = "Actividad por meses para identificar peri
 
 En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase habitual.
 
-## 2.6 Usuarios más activos
+## Usuarios más activos
 
 Además del análisis temporal de la actividad, también resulta relevante estudiar el nivel de participación de cada usuario. De este modo, se puede identificar qué estudiantes generan un mayor número de interacciones dentro del Aula Virtual.
 
@@ -367,7 +367,7 @@ knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad
 
 El análisis de la actividad por usuario muestra una alta participación, como se observa en la Figura \@ref(fig:figura-9) destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
-## 2.8 Relación entre asistencia y actividad
+## Relación entre asistencia y actividad
 
 Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones.
 Los alumnos asisten a clase en las horas establecidas, pero cuáles son sus hábitos de estudio. Vamos a ver cuántos de ellos estudian de noche.
@@ -419,7 +419,7 @@ En la Tabla \@ref(tab:tabla-7) se muestran los usuarios con mayor actividad para
 
 Los resultados reflejan que algunos usuarios destacan especialmente en determinadas interacciones, como la visualización de contenidos, la realización de cuestionarios o la consulta de calificaciones, mostrando distintos patrones de uso de la plataforma.
 
-## 2.8 Relación entre asistencia y actividad
+## Relación entre asistencia y actividad
 
 Otra de las preguntas más relevantes en este análisis sería conocer si los alumnos realizan más entregas o visualizaciones en el curso cuando se marca Asistencia en el Aula Virtual, es decir, que asisten a clase.
 Para ello calcularemos usando la correlación de Spearman debido a que las variables analizadas no necesariamente siguen una distribución normal y pueden contener valores extremos.
@@ -470,7 +470,7 @@ Se observa una correlación positiva moderadamente alta entre la asistencia y la
 Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
 
-## 2.9 Evolución temporal de la actividad
+## Evolución temporal de la actividad
 
 Además de estudiar la actividad por horas o días de la semana, resulta interesante analizar cómo evoluciona el uso del Aula Virtual a lo largo del curso académico.
 
