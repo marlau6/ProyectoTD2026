@@ -396,7 +396,7 @@ Los resultados reflejan que algunos usuarios destacan especialmente en determina
 
 \qquad Una cuestión fundamental para entender el comportamiento académico es determinar con cuánta antelación el alumnado prepara sus entregas. Para ello, hemos identificado los hitos de entrega y analizado la actividad en los diez días previos a la fecha límite.
 
-\qquad Como se observa en la Figura @ref(fig:figura-anticipacion), la actividad no se distribuye de forma homogénea durante el periodo de trabajo. Existe un incremento exponencial de las interacciones a medida que se acerca el vencimiento del plazo, lo que sugiere un patrón de trabajo reactivo frente a las fechas límite.
+\qquad Como se observa en la Figura \@ref(fig:figura-anticipacion), la actividad no se distribuye de forma homogénea durante el periodo de trabajo. Existe un incremento exponencial de las interacciones a medida que se acerca el vencimiento del plazo, lo que sugiere un patrón de trabajo reactivo frente a las fechas límite.
 
 ```{r, include=FALSE}
 
