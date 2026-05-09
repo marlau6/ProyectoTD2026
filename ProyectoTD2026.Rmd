@@ -312,15 +312,12 @@ Se observan distintos picos de actividad que coinciden con periodos de práctica
 Nos interesa también ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am donde nadie se conectó nunca.
 
 ```{r figura-10, fig.cap="Diferencias en el patrón horario según el día de la semana"}
-logs_df %>%
-  group_by(nombre_dia, hora) %>%
-  summarise(eventos = n(), .groups = "drop") %>%
-  ggplot(aes(x = hora, y = nombre_dia, fill = eventos)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightyellow", high = "darkblue", trans = "sqrt") +
-  labs(x = "Hora del día", y = "Día de la semana",
-       fill = "Nº eventos",
-       title = "Patrón de actividad por hora y día de la semana")
+logs_df %>% group_by(nombre_dia, hora) %>%
+  summarise(eventos = n(),.groups = "drop") %>%
+  ggplot(aes(x = hora,y = nombre_dia, fill = eventos)) + geom_tile() +
+  scale_fill_gradient(low = "lightyellow",high = "darkblue", trans = "sqrt") +
+  labs(x = "Hora del día",y = "Día de la semana", fill = "Nº eventos",
+       title = "Patrón de actividades por hora y día de la semana")
 ```
 
 ## Analisis de usuarios
