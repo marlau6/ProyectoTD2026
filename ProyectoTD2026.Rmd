@@ -266,7 +266,11 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 ```
 
 ### Relación entre actividad y entregas
-```{r figura-11, fig.cap="Relación entre actividad total y entregas por usuario"}
+
+También nos interesa ver la relación de la gráfica anterior con los dias de más entregas. Para esto la Figura \@ref(fig:figura-11) nos muestra la distribución de entregas a lo largo de la semana.
+
+El día con más entregas es el miércoles, que coincide con el día de más actividad. Sin embargo el viernes, el segundo día con más actividad en general, se posiciona como el cuarto respecto a entregas. Y como antes, los fines de semana disminuyen mucho las entregas. Esto sugiere que los estudiantes prefieren entregar las tareas en días laborables, probablemente ajustándose a los plazos establecidos por el profesor.
+```{r figura-11, fig.cap="Entregas por día de la semana"}
 # Entregas por día de la semana
 entregas_por_dia <- logs_df %>%
   filter(str_detect(nombre_evento, regex("entrega|subir|upload", ignore_case = TRUE))) %>%
@@ -277,8 +281,7 @@ ggplot(entregas_por_dia, aes(x = reorder(nombre_dia, -entregas), y = entregas, f
   geom_col(show.legend = FALSE) +
   labs(x = "Día de la semana", y = "Número de entregas",
        title = "¿Qué día se entregan más tareas?") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal()
 ```
 
 
