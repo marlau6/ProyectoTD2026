@@ -320,6 +320,23 @@ logs_df %>% group_by(nombre_dia, hora) %>%
        title = "Patrón de actividades por hora y día de la semana")
 ```
 
+### Relación entre actividad y entregas
+```{r figura-11, fig.cap="Relación entre actividad total y entregas por usuario"}
+# Entregas por día de la semana
+entregas_por_dia <- logs_df %>%
+  filter(str_detect(nombre_evento, regex("entrega|subir|upload", ignore_case = TRUE))) %>%
+  group_by(nombre_dia) %>%
+  summarise(entregas = n())
+
+ggplot(entregas_por_dia, aes(x = reorder(nombre_dia, -entregas), y = entregas, fill = nombre_dia)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = "Día de la semana", y = "Número de entregas",
+       title = "¿Qué día se entregan más tareas?") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
 ## Analisis de usuarios
 
 ### Usuarios más activos
