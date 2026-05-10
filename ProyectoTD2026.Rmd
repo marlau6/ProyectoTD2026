@@ -26,6 +26,7 @@ header-includes:
   - \addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
   - \pagestyle{fancy}
   - \fancyhf{}
+  - \fancyfoot[C]{\thepage}
   - \renewcommand{\headrulewidth}{0.5pt}
   - \renewcommand{\footrulewidth}{0.4pt}
 editor_options: 
@@ -43,6 +44,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+\pagenumbering{gobble}
+
+\newpage
+\pagenumbering{arabic}
 
 # Introducción
 
