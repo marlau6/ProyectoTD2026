@@ -44,8 +44,7 @@ knitr::opts_chunk$set(
 ```
 
 
-
-# Introducción.
+# Introducción
 
 \qquad Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
 
