@@ -138,7 +138,7 @@ logs_df <- logs_df %>% mutate(Componente = as.factor(Componente), nombre_evento 
 
 \qquad Una vez ya arreglados los nombres y clases de las columnas, observamos cuáles nos serán útiles para la realización del proyecto. En este caso todas, en la tabla \@ref(tab:tabla-variables) vemos el nombre de la variable y su descripción.
 
-```{r tabla-variables, tab.cap= "Tabla"}
+```{r tabla-variables, tab.cap= "Tabla", fig.pos='H'}
 descripcion <- data.frame(
   Variable = colnames(logs_df),
   Descripcion = c(
@@ -158,7 +158,7 @@ knitr::kable(descripcion,  caption = "Descripción de las variables del dataset"
 
 \qquad En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
 
-```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE}
+```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE, fig.pos='H'}
 registros_nas <- data.frame(Estado = c("NAs", "Correctos"), Total = c(sum(!complete.cases(logs_df)), sum(complete.cases(logs_df))))
 
 registros_nas$Porcentaje <- registros_nas$Total / sum(registros_nas$Total) * 100
@@ -168,7 +168,7 @@ ggplot(registros_nas, aes(x = Estado, y = Porcentaje, fill = Estado)) + geom_col
 
 \qquad En segundo lugar, como este porcentaje es muy preocupante, visualizamos en la figura \@ref(fig:figura-ColsConNAs) cuantos datos faltantes hay por columna. Notamos que la mayoría de NAs se corresponden a la columna "usuario_afectado", que esta columna contenga muchos NAs esta justificado, ya que NA = ningún usuario afectado por el evento.
 
-```{r figura-ColsConNAs, fig.cap="Diferencia entre datos faltantes y correctos por columna", echo = FALSE}
+```{r figura-ColsConNAs, fig.cap="Diferencia entre datos faltantes y correctos por columna", echo = FALSE, fig.pos='H'}
 logs_na_df <- as.data.frame(is.na(logs_df))
 
 logs_na_df <- logs_na_df %>% pivot_longer(cols = colnames(logs_na_df), names_to = "columnas", values_to = "valores") %>% group_by(columnas) %>% summarise(NAs = sum(valores), correctos = sum(!valores)) %>% mutate(total = NAs + correctos, NAs = NAs / total * 100, correctos = correctos / total * 100)
@@ -178,7 +178,7 @@ grafico_resumen <- logs_na_df %>%
                names_to = "Estado", 
                values_to = "Porcentaje")
 
-ggplot(grafico_resumen, aes(x = columnas, y = Porcentaje, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + scale_fill_manual(values = c("NAs" = "red", "correctos" = "green3")) + labs(y = "Porcentaje (%)") + theme_minimal()
+ggplot(grafico_resumen, aes(x = columnas, y = Porcentaje, fill = Estado)) + geom_col() + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) + scale_fill_manual(values = c("NAs" = "red", "correctos" = "green3")) + labs(y = "Porcentaje (%)") + theme_minimal() +  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 \qquad En tercer lugar, hemos visto que el 97.8% de los datos que faltan están en la columna usuario_afectado. Pero, el resto de "missing data" se encuentra en la columna ip.
@@ -220,13 +220,14 @@ nrow(cli_na) == num_NAs_ip
 
 En la Tabla \@ref(tab:tabla-logs1) y \@ref(tab:tabla-logs2) se muestran las primeras observaciones del conjunto de datos ya limpio, lo que nos permitirá empezar a explorar relaciones entre datos.
 
-```{r tabla-logs1, tab.cap= "Tabla"}
+```{r tabla-logs1, tab.cap= "Tabla", results='asis', fig.pos='H'}
+cat("\\small")
 logs_preview <- head(logs_df[,1:4], 5)
 logs_preview$contexto <- substr(logs_preview$contexto, 1, 20)
 knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
 ```
 
-```{r tabla-logs2, tab.cap= "Tabla"}
+```{r tabla-logs2, tab.cap= "Tabla", fig.pos='H'}
 logs_preview <- head(logs_df[,5:9], 5)
 logs_preview$descripcion <- substr(logs_preview$descripcion, 1, 20)
 knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
@@ -246,7 +247,8 @@ Para ello, se emplean representaciones gráficas y medidas descriptivas que perm
 
 La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará mas el Aula Virtual?. Entonces visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
 
-```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", echo = FALSE}
+```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", echo = FALSE, results='asis', fig.pos='H'}
+cat("\\normalsize")
 # Figura 1: Actividad por hora del dia
 
 logs_df$hora <- format(logs_df$Hora, "%H")
@@ -262,7 +264,7 @@ En la Figura \@ref(fig:figura-2), en la que se muestra la distribución de la ac
 
 Tras la visualización, concluimos que el dia con mayor actividad es el miércoles y el día con menor actividad es el sábado. Esto podría identificarse como un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
 
-```{r figura-2, fig.cap="Análisis de la actividad durante la semana", echo = FALSE}
+```{r figura-2, fig.cap="Análisis de la actividad durante la semana", echo = FALSE, fig.pos='H'}
 #Figura 4: Análisis de la actividad por dia de la semana
 
 logs_df$nombre_dia <- as.integer(format(logs_df$Hora, "%u"))
@@ -280,7 +282,7 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
 
-```{r tabla-5, fig.cap="Actividad mensual en el Aula Virtual", echo = FALSE}
+```{r tabla-5, fig.cap="Actividad mensual en el Aula Virtual", echo = FALSE, fig.pos='H'}
 
 logs_df$mes <- format(logs_df$Hora, "%m")
 
@@ -301,7 +303,7 @@ Además de estudiar la actividad por horas o días de la semana, resulta interes
 
 Este análisis permite identificar periodos de mayor intensidad de actividad, posiblemente relacionados con entregas, cuestionarios o exámenes.
 
-```{r figura-4, fig.cap="Evolución temporal de la actividad en Aula Virtual", echo = FALSE}
+```{r figura-4, fig.cap="Evolución temporal de la actividad en Aula Virtual", echo = FALSE, fig.pos='H'}
 actividad_diaria <- logs_df %>%
   mutate(fecha = as.Date(Hora)) %>%
   group_by(fecha) %>%
@@ -322,7 +324,7 @@ Se observan distintos picos de actividad que coinciden con periodos de práctica
 
 Nos interesa también ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am donde nadie se conectó nunca.
 
-```{r figura-10, fig.cap="Diferencias en el patrón horario según el día de la semana"}
+```{r figura-10, fig.cap="Diferencias en el patrón horario según el día de la semana", fig.pos='H'}
 logs_df %>%
   group_by(nombre_dia, hora) %>%
   summarise(eventos = n(), .groups = "drop") %>%
@@ -340,7 +342,7 @@ logs_df %>%
 
 Además del análisis temporal de la actividad, también resulta relevante estudiar el nivel de participación de cada usuario. De este modo, se puede identificar qué estudiantes generan un mayor número de interacciones dentro del Aula Virtual.
 
-```{r figura-9, fig.cap="¿Qué usuarios son más activos?"}
+```{r figura-9, fig.cap="¿Qué usuarios son más activos?", fig.pos='H'}
 mas_activos <- logs_df %>%
   group_by(nombre_usuario) %>%
   summarise(Interacciones= n()) %>%
@@ -357,7 +359,7 @@ El análisis de la actividad por usuario muestra una alta participación, como s
 
 Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones. Los alumnos asisten a clase en las horas establecidas, pero cuáles son sus hábitos de estudio. Vamos a ver cuántos de ellos estudian de noche.
 
-```{r tabla-6, fig.cap="Análisis de estudiantes con hábitos de estudio nocturno"}
+```{r tabla-6, fig.cap="Análisis de estudiantes con hábitos de estudio nocturno", fig.pos='H'}
 
 logs_df$hora_num <- as.numeric(format(logs_df$Hora, "%H"))
 
@@ -403,7 +405,7 @@ actividad_por_dias <- logs_df %>%
 
 ```
 
-```{r figura-anticipacion, fig.cap="Intensidad de envios cuando se acerca la fecha de entrega", echo = FALSE}
+```{r figura-anticipacion, fig.cap="Intensidad de envios cuando se acerca la fecha de entrega", echo = FALSE, fig.pos='H'}
 ggplot(actividad_por_dias, aes(x = dias_antes)) +
   geom_area(stat = "bin", binwidth = 1, fill = "tomato", alpha = 0.6) +
   geom_line(stat = "bin", binwidth = 1, color = "darkred", linewidth = 1) +
@@ -419,7 +421,7 @@ ggplot(actividad_por_dias, aes(x = dias_antes)) +
 
 \qquad Para cuantificar este esfuerzo final, en la Tabla \@ref(tab:tabla-anticip) se desglosa el volumen de eventos y el peso relativo de cada día sobre el total de la actividad preparatoria.
 
-```{r tabla-anticip, fig.cap="Porcentaje de entregas los dias antes del plazo.", echo=FALSE}
+```{r tabla-anticip, fig.cap="Porcentaje de entregas los dias antes del plazo.", echo=FALSE, fig.pos='H'}
 resumen_anticipacion <- actividad_por_dias %>%
   group_by(dias_antes) %>%
   summarise(eventos = n()) %>%
@@ -441,7 +443,7 @@ Siguiendo en la línea de mayor actividad, es interesante también conocer qué 
 
 Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas tales como ver el curso, visualizar el estado de la entrega entre otras.
 
-```{r tabla-2, fig.cap="Análisis de las actividades realizadas"}
+```{r tabla-2, fig.cap="Análisis de las actividades realizadas", fig.pos='H'}
 
 actividades_frecuentes <- logs_df %>%
   group_by(nombre_evento) %>%
@@ -462,7 +464,7 @@ Se observa que los eventos más utilizados corresponden a "Módulo de curso vist
 
 Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
 
-```{r tabla-3, fig.cap="Contexto de las actividades", out.width='80%'}
+```{r tabla-3, fig.cap="Contexto de las actividades", out.width='80%', fig.pos='H'}
 
 contextos_frecuentes <- logs_df %>%
   group_by(contexto) %>%
@@ -485,7 +487,7 @@ Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a cl
 
 Ahora que conocemos cuales son las actividades más usadas, es interesante saber también cuál es la media diaria de la realización de las distintas actividades.
 
-```{r tabla-4, fig.cap= "Media diaria de las actividades "}
+```{r tabla-4, fig.cap= "Media diaria de las actividades ", fig.pos='H'}
 
 media_actividades <- logs_df %>%
   mutate(fecha = as.Date(Hora)) %>%
@@ -505,7 +507,7 @@ Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o
 
 Otra de las preguntas más relevantes en este análisis sería conocer si los alumnos realizan más entregas o visualizaciones en el curso cuando se marca Asistencia en el Aula Virtual, es decir, que asisten a clase. Para ello calcularemos usando la correlación de Spearman debido a que las variables analizadas no necesariamente siguen una distribución normal y pueden contener valores extremos.
 
-```{r tabla-8, fig.cap="relacion entre asistencia y actividad"}
+```{r tabla-8, fig.cap="relacion entre asistencia y actividad", fig.pos='H'}
 
 
 logs_df$fecha <- as.Date(logs_df$Hora)
