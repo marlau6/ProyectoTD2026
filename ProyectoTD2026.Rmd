@@ -276,6 +276,26 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ```
 
+### Relación entre actividad y entregas
+
+También nos interesa ver la relación de la gráfica anterior con los dias de más entregas. Para esto la Figura \@ref(fig:figura-11) nos muestra la distribución de entregas a lo largo de la semana.
+
+El día con más entregas es el miércoles, que coincide con el día de más actividad. Sin embargo el viernes, el segundo día con más actividad en general, se posiciona como el cuarto respecto a entregas. Y como antes, los fines de semana disminuyen mucho las entregas. Esto sugiere que los estudiantes prefieren entregar las tareas en días laborables, probablemente ajustándose a los plazos establecidos por el profesor.
+```{r figura-11, fig.cap="Entregas por día de la semana"}
+# Entregas por día de la semana
+entregas_por_dia <- logs_df %>%
+  filter(str_detect(nombre_evento, regex("entrega|subir|upload", ignore_case = TRUE))) %>%
+  group_by(nombre_dia) %>%
+  summarise(entregas = n())
+
+ggplot(entregas_por_dia, aes(x = reorder(nombre_dia, -entregas), y = entregas, fill = nombre_dia)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = "Día de la semana", y = "Número de entregas",
+       title = "¿Qué día se entregan más tareas?") +
+  theme_minimal()
+```
+
+
 ### Actividad mensual
 
 Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
@@ -320,19 +340,17 @@ Se observan distintos picos de actividad que coinciden con periodos de práctica
 
 ### Patrón de actividad por hora y día de la semana
 
-Nos interesa también ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am donde nadie se conectó nunca.
+También interesa ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am, donde nadie se conectó nunca.
 
 ```{r figura-10, fig.cap="Diferencias en el patrón horario según el día de la semana"}
-logs_df %>%
-  group_by(nombre_dia, hora) %>%
-  summarise(eventos = n(), .groups = "drop") %>%
-  ggplot(aes(x = hora, y = nombre_dia, fill = eventos)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightyellow", high = "darkblue", trans = "sqrt") +
-  labs(x = "Hora del día", y = "Día de la semana",
-       fill = "Nº eventos",
-       title = "Patrón de actividad por hora y día de la semana")
+logs_df %>% group_by(nombre_dia, hora) %>%
+  summarise(eventos = n(),.groups = "drop") %>%
+  ggplot(aes(x = hora,y = nombre_dia, fill = eventos)) + geom_tile() +
+  scale_fill_gradient(low = "lightyellow",high = "darkblue", trans = "sqrt") +
+  labs(x = "Hora del día",y = "Día de la semana", fill = "Nº eventos",
+       title = "Patrón de actividades por hora y día de la semana")
 ```
+
 
 ## Analisis de usuarios
 

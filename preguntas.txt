@@ -24,4 +24,6 @@ Pregunta 12
 ¿Qué usuarios son más activos según cada tipo de actividad?
 Pregunta 13
 ¿Existen periodos del curso con mayor concentración de actividad en el Aula Virtual?
+Pregunta 14
+¿Cómo cambian los picos de actividad respecto a los días de la semana?
 ...
