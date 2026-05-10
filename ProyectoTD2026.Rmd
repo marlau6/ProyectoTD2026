@@ -233,6 +233,7 @@ knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", bookt
 
 ```
 
+
 # Análisis exploratorio de los datos
 
 En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
