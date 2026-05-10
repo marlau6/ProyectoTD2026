@@ -13,7 +13,8 @@ lang: es
 header-includes:
   - \usepackage{float}
   - \makeatletter
-  - \def\fps@table{H}
+  - \def\fps@table{htbp}
+  - \def\fps@figure{htbp}
   - \makeatother
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
@@ -28,7 +29,14 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  warning = FALSE, 
+  message = FALSE, 
+  out.width = "65%",  
+  fig.align = "center",
+  fig.pos = "htbp"
+)
 ```
 
 \newpage
@@ -48,6 +56,8 @@ knitr::opts_chunk$set(echo = FALSE)
 \qquad El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
 
 \qquad A través de este estudio se pretende comprender mejor los patrones de interacción de los estudiantes con la plataforma y su relación con la dinámica académica de la asignatura.
+
+# Material y métodos
 
 ## Carga de librerías
 
@@ -371,26 +381,6 @@ Como se muestra en Tabla \@ref(tab:tabla-6) hay un 75.86% de los alumnos que alg
 
 Este dato muestra que el estudio nocturno no es un hábito aislado de unos pocos alumnos, sino una práctica recurrente entre un porcentaje muy alto de la clase, lo que demuestra la necesidad de disponer de materiales accesibles de forma autónoma en cualquier momento.
 
-\newpage
-
-Otro aspecto muy interesante sería conocer qué usuarios utilizan más el Aula Virtual con respecto a las distintas actividades del curso.
-
-```{r tabla-7, fig.cap="Usuarios mas activos"}
-top_usuarios <- logs_df %>%
-  group_by(nombre_evento, nombre_usuario) %>%
-  summarise(total = n(), .groups = "drop") %>%
-  group_by(nombre_evento) %>%
-  filter(total == max(total)) %>%
-  ungroup() %>%
-  arrange(desc(total))
-
-knitr::kable(head(top_usuarios,15),caption = "Usuarios más activos según el tipo de actividad")
-
-```
-
-En la Tabla \@ref(tab:tabla-7) se muestran los usuarios con mayor actividad para cada tipo de evento registrado en el Aula Virtual.
-
-Los resultados reflejan que algunos usuarios destacan especialmente en determinadas interacciones, como la visualización de contenidos, la realización de cuestionarios o la consulta de calificaciones, mostrando distintos patrones de uso de la plataforma.
 
 ### Entregas al límite
 
@@ -426,7 +416,7 @@ ggplot(actividad_por_dias, aes(x = dias_antes)) +
   theme_minimal()
 ```
 
-\qquad Para cuantificar este esfuerzo final, en la Tabla @ref(tab:tabla-anticip) se desglosa el volumen de eventos y el peso relativo de cada día sobre el total de la actividad preparatoria.
+\qquad Para cuantificar este esfuerzo final, en la Tabla \@ref(tab:tabla-anticip) se desglosa el volumen de eventos y el peso relativo de cada día sobre el total de la actividad preparatoria.
 
 ```{r tabla-anticip, fig.cap="Porcentaje de entregas los dias antes del plazo.", echo=FALSE}
 resumen_anticipacion <- actividad_por_dias %>%
@@ -489,8 +479,6 @@ El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que rep
 Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
 Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
-
-\newpage
 
 ### Media diaria de actividad
 
@@ -562,18 +550,23 @@ Se observa una correlación positiva moderadamente alta entre la asistencia y la
 Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
 
-\newpage
-
 # Conclusiones
 
-A partir del análisis realizado sobre los logs del Aula Virtual, se ha observado que:
+El análisis de los logs de la asignatura Tratamiento de los Datos durante el curso 2024-2025 permite extraer conclusiones fundamentales sobre el aprendizaje y la dinámica de los alumnos de Ciencia de Datos.
 
--   La actividad de los usuarios sigue patrones claramente relacionados con el calendario académico.
+En primer lugar, sino que la dependencia del calendario académico es realmente significante. No solo el uso se concentra en los días en los que hay clase, sino que las entregas y cuestionarios son los que realmente dictan los picos de uso de la plataforma.
 
--   Los días laborables presentan una actividad muy superior al fin de semana.
+La entrega poco anticipada está presente, con un volumen de actividad exponencialmente mayor en las 48 horas previas a las fechas límite, lo cual podría ser un indicador de procrastinación o de una carga de trabajo que se solapa entre asignaturas.
 
--   Los eventos más frecuentes están relacionados con la visualización del curso y la evaluación continua.
+En segundo lugar, los hábitos de estudio nocturno han dejado de ser una excepción para convertirse en la norma. Esto implica que el material del Aula Virtual debe ser autosuficiente, permitiendo al alumno avanzar de forma autónoma cuando no se está impartiendo la asignatura.
 
--   Existen usuarios con un nivel de interacción significativamente superior al resto.
+En tercer lugar, mientras que una minoría de usuarios, como el caso del usuario U0072, presenta una interacción masiva, el grueso de la clase mantiene un ritmo constante pero mucho más moderado. Esta disparidad sugiere que el número de interacciones no solo mide el estudio, sino también diferentes estilos de aprendizaje.
+Algunos alumnos necesitan consultar el material repetidamente, mientras que otros realizan descargas puntuales y solo lo consultan en la plataforma una única vez.
 
-Además, se ha comprobado que los picos de actividad coinciden con periodos de prácticas, cuestionarios y exámenes, lo que confirma el uso intensivo de la plataforma como herramienta para la asignatura
+
+Finalmente, la correlación moderada entre la asistencia y las visualizaciones (0.616) apoya bastante bien la forma de trabajo seguida en la asignatura. Esto parece indicar que las clases presenciales sirven como incentivo para que el alumnado utilice también la plataforma virtual. En cambio, la correlación más baja con las entregas (0.359) sugiere que la realización de trabajos no está tan ligada a la asistencia diaria, sino que muchas veces se concentra en periodos de estudio intensivo fuera del aula.
+
+En conclusión, el Aula Virtual no funciona únicamente como un repositorio de archivos, sino que refleja bastante bien la dinámica académica del curso. A partir de los datos analizados, una posible mejora sería distribuir las fechas y entregas de manera más escalonada, evitando así la acumulación de actividad que se producen en las últimas horas antes de los plazos.
+
+
+
