@@ -1,5 +1,6 @@
 ---
-title: "Análisis de logs en el aula virtual"
+title: "Mini Proyecto 2026: Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025"
+subtitle: " Tratamiento de Datos. Grado en Ciencia de Datos- UV"
 author: "Miriam Díaz, Manuel Giner, Manuel Maestre, Irene Ponce, Sergio Martínez"
 date: "`r Sys.Date()`"
 output:
@@ -41,12 +42,6 @@ knitr::opts_chunk$set(
 
 \newpage
 
-# Mini Proyecto 2026 {.unnumbered}
-
-### Análisis de los logs de la asignatura en Aula Virtual durante el curso 2024-2025 {.unnumbered}
-
-##### Tratamiento de Datos. Grado en Ciencia de Datos- UV {.unnumbered}
-
 # Introducción.
 
 \qquad Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
@@ -57,27 +52,17 @@ knitr::opts_chunk$set(
 
 \qquad A través de este estudio se pretende comprender mejor los patrones de interacción de los estudiantes con la plataforma y su relación con la dinámica académica de la asignatura.
 
+\qquad Las preguntas que resolveremos serán las siguientes:
+
+- ¿En qué hora se visitará más el Aula Virtual?
+- 
+
 # Material y métodos
 
 ## Carga de librerías
 
-\qquad Para empezar, se cargan todas las librerías que se utilizarán durante las distintas fases del trabajo, estas seran:
+\qquad Para empezar, se cargan todas las librerías que se utilizarán durante las distintas fases del trabajo, estas seran: **Readr** , **Knitr** , **ggplot2** , **dplyr** , **tibble** , **tidyr** , **GGally** , **stringr** .
 
--   **Readr**: importar y leer el archivo CSV de forma eficiente.
-
--   **Knitr**: generar el informe final en formato PDF o HTML a partir del documento R Markdown.
-
--   **ggplot2**: crear visualizaciones y gráficos de datos.
-
--   **dplyr**: manipular y transformar los datos (filtrar, agrupar, resumir, etc.).
-
--   **tibble**: trabajar con data frames modernos y más legibles.
-
--   **tidyr**: reorganizar y limpiar los datos (pivotar, separar columnas, etc.).
-
--   **GGally**: extender ggplot2 con gráficos adicionales como matrices de correlación.
-
--   **stringr**: manipular y procesar cadenas de texto de forma sencilla.
 
 ```{r, include = FALSE}
 # Carga de librerías
@@ -231,7 +216,6 @@ knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", bookt
 logs_preview <- head(logs_df[,5:9], 5)
 logs_preview$descripcion <- substr(logs_preview$descripcion, 1, 20)
 knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
-
 ```
 
 
@@ -245,7 +229,9 @@ Para ello, se emplean representaciones gráficas y medidas descriptivas que perm
 
 ### Actividad por horas
 
-La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará mas el Aula Virtual?. Entonces visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
+La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará más el Aula Virtual?. 
+Visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. 
+Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
 
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", echo = FALSE, results='asis', fig.pos='H'}
 cat("\\normalsize")
@@ -482,26 +468,6 @@ El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que rep
 Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
 Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
-
-### Media diaria de actividad
-
-Ahora que conocemos cuales son las actividades más usadas, es interesante saber también cuál es la media diaria de la realización de las distintas actividades.
-
-```{r tabla-4, fig.cap= "Media diaria de las actividades ", fig.pos='H'}
-
-media_actividades <- logs_df %>%
-  mutate(fecha = as.Date(Hora)) %>%
-  group_by(fecha, nombre_dia) %>%
-  summarise(eventos_diarios = n(), .groups = "drop") %>%
-  group_by(nombre_dia) %>%
-  summarise(media = mean(eventos_diarios)) %>%
-  arrange(nombre_dia)
-
-knitr::kable(media_actividades, caption = "Media de actividades por día de la semana")
-
-```
-
-Como se ve en la figura \@ref(tab:tabla-4) la media de las actividades es más o menos regular excepto en el sábado, que es muy baja, y el miércoles, que es más elevada.
 
 ### Relación entre asistencia y actividad
 
