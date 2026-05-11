@@ -51,11 +51,11 @@ knitr::opts_chunk$set(
 
 # Introducción
 
-\qquad Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
+\qquad Este proyecto consiste en analizar los inicios de sesión, logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante el curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
 
 \qquad El objetivo principal de este proyecto es analizar y explorar el comportamiento de los usuarios de la plataforma, identificando patrones de uso, frecuencia de acceso y posibles relaciones entre variables.
 
-\qquad El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
+\qquad El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en la plataforma, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
 
 \qquad A través de este estudio se pretende comprender mejor los patrones de interacción de los estudiantes con la plataforma y su relación con la dinámica académica de la asignatura.
 
@@ -95,7 +95,7 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 
 \qquad Aunque la librería read_csv nos proporciona la opción de importar el fichero con las clases que queramos, después de importarlo revisamos el data frame mediante una inspección de datos.
 
-\qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas, los nombres de las variables y sus clases. Tras este primer analisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
+\qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros x 9 columnas, los nombres de las variables y sus clases. Tras este primer analisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
 
 ```{r cambio_nombres, include = FALSE}
 # Dimensiones del data frame
@@ -143,7 +143,7 @@ knitr::kable(descripcion,  caption = "Descripción de las variables del dataset"
 
 ## Análisis de missing data en nuestro data frame
 
-\qquad En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
+\qquad Antes de empezara  trabajar con los datos vamos a analizar los missing data. En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
 
 ```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE, fig.pos='H'}
 registros_nas <- data.frame(Estado = c("NAs", "Correctos"), Total = c(sum(!complete.cases(logs_df)), sum(complete.cases(logs_df))))
@@ -267,7 +267,7 @@ knitr::kable(actividad_mes, caption = "Actividad por meses para identificar peri
 
 ```
 
-En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase habitual.
+En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes (enero, febrero y mayo), el volumen de interacciones crece mucho frente a los meses de clase habitual.
 
 ### ¿Cómo evoluciona la actividad a lo largo del curso?
 
@@ -394,6 +394,7 @@ ggplot(actividad_por_dias, aes(x = dias_antes)) +
 \qquad Para cuantificar este esfuerzo final, en la Tabla \@ref(tab:tabla-anticip) se desglosa el volumen de eventos y el peso relativo de cada día sobre el total de la actividad preparatoria.
 
 ```{r tabla-anticip, fig.cap="Porcentaje de entregas los dias antes del plazo.", echo=FALSE, fig.pos='H'}
+
 resumen_anticipacion <- actividad_por_dias %>%
   group_by(dias_antes) %>%
   summarise(eventos = n()) %>%
