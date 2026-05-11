@@ -320,10 +320,18 @@ mas_activos <- logs_df %>%
   arrange(desc(Interacciones)) %>%
   head (10) #Para los 10 primeros
 
+usuariou0072 <- logs_df %>% filter(nombre_usuario == "U0072")
+eventosu0072 <- table(usuariou0072$nombre_evento)
+
+usuariou0001 <- logs_df %>% filter(nombre_usuario == "U0001")
+eventosu0001 <- table(usuariou0001$nombre_evento)
+
+
 knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
+
 ```
 
-\qquad El análisis de la actividad por usuario muestra una alta participación, como se observa en la tabla \@ref(tab:figura-9) destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
+\qquad El análisis de la actividad por usuario muestra una alta participación, como se observa en la tabla \@ref(tab:figura-9) destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. Aunque viendo los eventos del top1 y top2, podemos asumir que seran un miembro del equipo docente para el primer caso y una automatización de calificaciones para el segundo. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
 ### ¿Existen hábitos de estudio nocturno?
