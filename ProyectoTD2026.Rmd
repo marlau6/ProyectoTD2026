@@ -51,11 +51,11 @@ knitr::opts_chunk$set(
 
 # Introducción
 
-\qquad Este proyecto consiste en analizar los inicios de sesión,logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante en curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
+\qquad Este proyecto consiste en analizar los inicios de sesión, logs, realizados en el Aula Virtual en la asignatura Tratamiento de los Datos durante el curso 2024-2025 del Grado en Ciencia de Datos de la Universitat de València.
 
 \qquad El objetivo principal de este proyecto es analizar y explorar el comportamiento de los usuarios de la plataforma, identificando patrones de uso, frecuencia de acceso y posibles relaciones entre variables.
 
-\qquad El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en el Aula Virtual, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
+\qquad El conjunto de datos utilizado, proporcionado por aula virtual, contiene información anonimizada sobre las interacciones realizadas en la plataforma, de manera que cada registro corresponde a un evento en la plataforma, incluyendo la marca temporal, el usuario implicado y el contexto de la acción realizada. Por tanto, permite realizar un análisis descriptivo sin comprometer la privacidad de los usuarios.
 
 \qquad A través de este estudio se pretende comprender mejor los patrones de interacción de los estudiantes con la plataforma y su relación con la dinámica académica de la asignatura.
 
@@ -95,7 +95,11 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 
 \qquad Aunque la librería read_csv nos proporciona la opción de importar el fichero con las clases que queramos, después de importarlo revisamos el data frame mediante una inspección de datos.
 
+<<<<<<< HEAD
 \qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas, los nombres de las variables y sus clases. Tras este primer análisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas más tarde. Por eso, cambiamos los nombres de algunas columnas.
+=======
+\qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros x 9 columnas, los nombres de las variables y sus clases. Tras este primer analisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
+>>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r cambio_nombres, include = FALSE}
 # Dimensiones del data frame
@@ -143,7 +147,7 @@ knitr::kable(descripcion,  caption = "Descripción de las variables del dataset"
 
 ## Análisis de missing data en nuestro data frame
 
-\qquad En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
+\qquad Antes de empezara  trabajar con los datos vamos a analizar los missing data. En primer lugar, calculamos el número de registros que contienen al menos un NA en cualquier columna del conjunto. Como vemos en la figura \@ref(fig:figura-registrosConNAs) el 64.6% de registros del data frame contiene algún "missing data".
 
 ```{r figura-registrosConNAs, fig.cap="Diferencia entre registros con datos faltantes y correctos", echo = FALSE, fig.pos='H'}
 registros_nas <- data.frame(Estado = c("NAs", "Correctos"), Total = c(sum(!complete.cases(logs_df)), sum(complete.cases(logs_df))))
@@ -207,18 +211,23 @@ nrow(cli_na) == num_NAs_ip
 
 # Resultados
 
-En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
+\qquad En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
 
-Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
+\qquad Para ello, se emplean representaciones gráficas y medidas descriptivas que permiten identificar patrones relevantes.
 
 ## Analisis Temporal
 
 ### ¿En qué horas se utiliza más el Aula Virtual?
 
+<<<<<<< HEAD
 La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará más el Aula Virtual?. 
 Visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. 
 Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. 
 Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
+=======
+\qquad La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará más el Aula Virtual?.  Visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. 
+\qquad Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
+>>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", echo = FALSE, results='asis', fig.pos='H'}
 cat("\\normalsize")
@@ -231,11 +240,15 @@ ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = 
 
 ### ¿Qué días de la semana presentan más actividad?
 
-En segundo lugar, nos interesó conocer el día con mayor y el día con menor actividad.
+\qquad En segundo lugar, nos interesó conocer el día con mayor y el día con menor actividad.
 
-En la Figura \@ref(fig:figura-2), en la que se muestra la distribución de la actividad a lo largo de la semana, se observa un ascenso claro durante la mitad de semana, mientras que durante el fin de semana la actividad disminuye notablemente.
+\qquad En la Figura \@ref(fig:figura-2), en la que se muestra la distribución de la actividad a lo largo de la semana, se observa un ascenso claro durante la mitad de semana, mientras que durante el fin de semana la actividad disminuye notablemente.
 
+<<<<<<< HEAD
 Tras la visualización, concluimos que el día con mayor actividad es el miércoles y el día con menor actividad es el sábado. Esto podría identificarse como un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
+=======
+\qquad Tras la visualización, concluimos que el dia con mayor actividad es el miércoles y el día con menor actividad es el sábado. Esto podría identificarse como un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
+>>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r figura-2, fig.cap="Análisis de la actividad durante la semana", echo = FALSE, fig.pos='H'}
 #Figura 4: Análisis de la actividad por dia de la semana
@@ -253,7 +266,7 @@ ggplot(logs_df, aes(x=nombre_dia)) +
 
 ### ¿Cómo varía la actividad según el mes?
 
-Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
+\qquad Además de analizar los contextos con mayor actividad, también es relevante estudiar cómo varía el número de interacciones a lo largo de los diferentes meses del curso. De este modo, se pueden identificar los periodos en los que el alumnado hace un uso más intensivo del Aula Virtual.
 
 ```{r tabla-5, fig.cap="Actividad mensual en el Aula Virtual", echo = FALSE, fig.pos='H'}
 
@@ -268,13 +281,13 @@ knitr::kable(actividad_mes, caption = "Actividad por meses para identificar peri
 
 ```
 
-En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes, el volumen de interacciones crece mucho frente a los meses de clase habitual.
+\qquad En la Tabla \@ref(tab:tabla-5) se muestra la distribución del total de eventos a lo largo de los distintos meses del curso. Esto nos permite confirmar que en los meses que coinciden con entregas finales y exámenes (enero, febrero y mayo), el volumen de interacciones crece mucho frente a los meses de clase habitual.
 
 ### ¿Cómo evoluciona la actividad a lo largo del curso?
 
-Además de estudiar la actividad por horas o días de la semana, resulta interesante analizar cómo evoluciona el uso del Aula Virtual a lo largo del curso académico.
+\qquad Además de estudiar la actividad por horas o días de la semana, resulta interesante analizar cómo evoluciona el uso del Aula Virtual a lo largo del curso académico.
 
-Este análisis permite identificar periodos de mayor intensidad de actividad, posiblemente relacionados con entregas, cuestionarios o exámenes.
+\qquad Este análisis permite identificar periodos de mayor intensidad de actividad, posiblemente relacionados con entregas, cuestionarios o exámenes.
 
 ```{r figura-4, fig.cap="Evolución temporal de la actividad en Aula Virtual", echo = FALSE, fig.pos='H'}
 actividad_diaria <- logs_df %>%
@@ -289,13 +302,13 @@ ggplot(actividad_diaria, aes(x = fecha, y = eventos)) +
   theme_minimal()
 ```
 
-La Figura \@ref(fig:figura-4) muestra la evolución temporal de la actividad registrada en el Aula Virtual a lo largo del curso académico.
+\qquad La Figura \@ref(fig:figura-4) muestra la evolución temporal de la actividad registrada en el Aula Virtual a lo largo del curso académico.
 
-Se observan distintos picos de actividad que coinciden con periodos de prácticas, cuestionarios y exámenes, mientras que durante vacaciones o periodos en los que no hay clase la interacción disminuye notablemente.
+\qquad Se observan distintos picos de actividad que coinciden con periodos de prácticas, cuestionarios y exámenes, mientras que durante vacaciones o periodos en los que no hay clase la interacción disminuye notablemente.
 
 ### ¿Cómo cambia el patrón horario según el día de la semana?
 
-Nos interesa también ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am donde nadie se conectó nunca.
+\qquad Nos interesa también ver como cambian los picos de actividad respecto a los días de la semana. Para esto se muestra el patrón de actividad cruzando la hora del día con el día de la semana. Se observa en la figura \@ref(fig:figura-10) que los miércoles y viernes concentran la actividad en horario de clase, mientras que los fines de semana y las horas de madrugada la actividad es mucho menor e incluso observamos dos horas, los domingos de 4:30 am a 6:30 am donde nadie se conectó nunca.
 
 ```{r figura-10, fig.cap="Diferencias en el patrón horario según el día de la semana", fig.pos='H'}
 logs_df %>%
@@ -313,7 +326,7 @@ logs_df %>%
 
 ### ¿Qué usuarios son los más activos?
 
-Además del análisis temporal de la actividad, también resulta relevante estudiar el nivel de participación de cada usuario. De este modo, se puede identificar qué estudiantes generan un mayor número de interacciones dentro del Aula Virtual.
+\qquad Además del análisis temporal de la actividad, también resulta relevante estudiar el nivel de participación de cada usuario. De este modo, se puede identificar qué estudiantes generan un mayor número de interacciones dentro del Aula Virtual.
 
 ```{r figura-9, fig.cap="¿Qué usuarios son más activos?", fig.pos='H'}
 mas_activos <- logs_df %>%
@@ -322,15 +335,23 @@ mas_activos <- logs_df %>%
   arrange(desc(Interacciones)) %>%
   head (10) #Para los 10 primeros
 
+usuariou0072 <- logs_df %>% filter(nombre_usuario == "U0072")
+eventosu0072 <- table(usuariou0072$nombre_evento)
+
+usuariou0001 <- logs_df %>% filter(nombre_usuario == "U0001")
+eventosu0001 <- table(usuariou0001$nombre_evento)
+
+
 knitr::kable(mas_activos, caption= " Top 10 usuarios con más nivel de actividad")
+
 ```
 
-El análisis de la actividad por usuario muestra una alta participación, como se observa en la tabla \@ref(tab:figura-9) destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
+\qquad El análisis de la actividad por usuario muestra una alta participación, como se observa en la tabla \@ref(tab:figura-9) destacando especialmente al usuario U0072 con más de 13.000 interacciones, una cifra muy superior a la media. Aunque viendo los eventos del top1 y top2, podemos asumir que seran un miembro del equipo docente para el primer caso y una automatización de calificaciones para el segundo. También observamos que el top 10 mantiene un buen ritmo constante, por encima de los 1.700 clics.
 
 
 ### ¿Existen hábitos de estudio nocturno?
 
-Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones. Los alumnos asisten a clase en las horas establecidas, pero cuáles son sus hábitos de estudio. Vamos a ver cuántos de ellos estudian de noche.
+\qquad Para seguir con el análisis es interesante también explorar con profundidad algunos matices que pueden revelar patrones. Los alumnos asisten a clase en las horas establecidas, pero cuáles son sus hábitos de estudio. Vamos a ver cuántos de ellos estudian de noche.
 
 ```{r tabla-6, fig.cap="Análisis de estudiantes con hábitos de estudio nocturno", fig.pos='H'}
 
@@ -353,9 +374,9 @@ knitr::kable(tabla_madrugada, caption = "Análisis de estudiantes con hábitos d
 
 ```
 
-Como se muestra en Tabla \@ref(tab:tabla-6) hay un 75.86% de los alumnos que alguna vez han usado el Aula Virtual en la franja horaria entre las 12 de la noche y las 6 de la mañana. Hay un total de 87 usuarios en el curso y 66 han accedido en esas horas.
+\qquad Como se muestra en Tabla \@ref(tab:tabla-6) hay un 75.86% de los alumnos que alguna vez han usado el Aula Virtual en la franja horaria entre las 12 de la noche y las 6 de la mañana. Hay un total de 87 usuarios en el curso y 66 han accedido en esas horas.
 
-Este dato muestra que el estudio nocturno no es un hábito aislado de unos pocos alumnos, sino una práctica recurrente entre un porcentaje muy alto de la clase, lo que demuestra la necesidad de disponer de materiales accesibles de forma autónoma en cualquier momento.
+\qquad Este dato muestra que el estudio nocturno no es un hábito aislado de unos pocos alumnos, sino una práctica recurrente entre un porcentaje muy alto de la clase, lo que demuestra la necesidad de disponer de materiales accesibles de forma autónoma en cualquier momento.
 
 
 ### ¿Con cuánta antelación preparan los alumnos sus entregas?
@@ -395,6 +416,7 @@ ggplot(actividad_por_dias, aes(x = dias_antes)) +
 \qquad Para cuantificar este esfuerzo final, en la Tabla \@ref(tab:tabla-anticip) se desglosa el volumen de eventos y el peso relativo de cada día sobre el total de la actividad preparatoria.
 
 ```{r tabla-anticip, fig.cap="Porcentaje de entregas los dias antes del plazo.", echo=FALSE, fig.pos='H'}
+
 resumen_anticipacion <- actividad_por_dias %>%
   group_by(dias_antes) %>%
   summarise(eventos = n()) %>%
@@ -412,9 +434,9 @@ knitr::kable(resumen_anticipacion,
 
 ### ¿Qué eventos son los más frecuentes?
 
-Siguiendo en la línea de mayor actividad, es interesante también conocer qué contenidos o recursos del Aula Virtual se utilizan con mayor frecuencia
+\qquad Siguiendo en la línea de mayor actividad, es interesante también conocer qué contenidos o recursos del Aula Virtual se utilizan con mayor frecuencia
 
-Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas tales como ver el curso, visualizar el estado de la entrega entre otras.
+\qquad Dentro de la asignatura Tratamiento de los Datos se pueden hacer distintas cosas tales como ver el curso, visualizar el estado de la entrega entre otras.
 
 ```{r tabla-2, fig.cap="Análisis de las actividades realizadas", fig.pos='H'}
 
@@ -428,14 +450,14 @@ knitr::kable(head(actividades_frecuentes, 10),
 
 ```
 
-En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes registradas en la plataforma.
+\qquad En la Tabla \@ref(tab:tabla-2) se muestran las actividades más frecuentes registradas en la plataforma.
 
-Se observa que los eventos más utilizados corresponden a "Módulo de curso visto","Curso visto" "Usuario calificado" y "Se ha visualizado el estado de la entrega", lo que indica que los usuarios emplean principalmente el Aula Virtual para consultar contenido, entregar tareas y revisar sus calificaciones.
+\qquad Se observa que los eventos más utilizados corresponden a "Módulo de curso visto","Curso visto" "Usuario calificado" y "Se ha visualizado el estado de la entrega", lo que indica que los usuarios emplean principalmente el Aula Virtual para consultar contenido, entregar tareas y revisar sus calificaciones.
 
 
 ### ¿En qué contextos se concentra la actividad?
 
-Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
+\qquad Para complementar el análisis anterior, resulta interesante analizar en qué contextos se producen.
 
 ```{r tabla-3, fig.cap="Contexto de las actividades", out.width='80%', fig.pos='H'}
 
@@ -448,17 +470,17 @@ knitr::kable(head(contextos_frecuentes, 10),
              caption = "Contextos con mayor actividad registrada")
 ```
 
-En la Tabla \@ref(tab:tabla-3) la actividad no se distribuye de forma genérica, sino que se concentra en puntos clave.
+\qquad En la Tabla \@ref(tab:tabla-3) la actividad no se distribuye de forma genérica, sino que se concentra en puntos clave.
 
-El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que representa la visualización general del curso.
+\qquad El contexto con mayor volumen de eventos suele ser el propio "Curso", lo que representa la visualización general del curso.
 
-Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
+\qquad Sin embargo, destacan los contextos de "Tarea" y "Cuestionario", lo que confirma que el uso del Aula Virtual está orientado a la evaluación continua y la entrega de ejercicios prácticos de la asignatura.
 
-Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
+\qquad Además destacar el apartado de "Asistencia" marcada cada vez que se asiste a clase.
 
 ### ¿Existe relación entre la asistencia y la actividad?
 
-Otra de las preguntas más relevantes en este análisis sería conocer si los alumnos realizan más entregas o visualizaciones en el curso cuando se marca Asistencia en el Aula Virtual, es decir, que asisten a clase. Para ello calcularemos usando la correlación de Spearman debido a que las variables analizadas no necesariamente siguen una distribución normal y pueden contener valores extremos.
+\qquad Otra de las preguntas más relevantes en este análisis sería conocer si los alumnos realizan más entregas o visualizaciones en el curso cuando se marca Asistencia en el Aula Virtual, es decir, que asisten a clase. Para ello calcularemos usando la correlación de Spearman debido a que las variables analizadas no necesariamente siguen una distribución normal y pueden contener valores extremos.
 
 ```{r tabla-8, fig.cap="relacion entre asistencia y actividad", fig.pos='H'}
 
@@ -499,27 +521,28 @@ tabla_cor <- data.frame(Relacion = c("Asistencia vs Vistas","Asistencia vs Entre
 knitr::kable(tabla_cor,digits = 3,caption = "Correlación entre asistencia y actividad en Aula Virtual")
 ```
 
-En la Tabla \@ref(tab:tabla-8) se muestra la correlación entre los registros de asistencia y distintos tipos de actividad en el Aula Virtual.
+\qquad En la Tabla \@ref(tab:tabla-8) se muestra la correlación entre los registros de asistencia y distintos tipos de actividad en el Aula Virtual.
 
-Se observa una correlación positiva moderadamente alta entre la asistencia y las visualizaciones de contenido, cuyo valor es de 0.616; lo que indica que los días con mayor asistencia suelen coincidir también con una mayor consulta de materiales y recursos de la plataforma.
+\qquad Se observa una correlación positiva moderadamente alta entre la asistencia y las visualizaciones de contenido, cuyo valor es de 0.616; lo que indica que los días con mayor asistencia suelen coincidir también con una mayor consulta de materiales y recursos de la plataforma.
 
-Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
+\qquad Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
 
 # Conclusiones
 
-El análisis de los logs de la asignatura Tratamiento de los Datos durante el curso 2024-2025 permite extraer conclusiones fundamentales sobre el aprendizaje y la dinámica de los alumnos de Ciencia de Datos.
+\qquad El análisis de los logs de la asignatura Tratamiento de los Datos durante el curso 2024-2025 permite extraer conclusiones fundamentales sobre el aprendizaje y la dinámica de los alumnos de Ciencia de Datos.
 
-En primer lugar, sino que la dependencia del calendario académico es realmente significante. No solo el uso se concentra en los días en los que hay clase, sino que las entregas y cuestionarios son los que realmente dictan los picos de uso de la plataforma.
+\qquad En primer lugar, sino que la dependencia del calendario académico es realmente significante. No solo el uso se concentra en los días en los que hay clase, sino que las entregas y cuestionarios son los que realmente dictan los picos de uso de la plataforma.
 
-La entrega poco anticipada está presente, con un volumen de actividad exponencialmente mayor en las 48 horas previas a las fechas límite, lo cual podría ser un indicador de procrastinación o de una carga de trabajo que se solapa entre asignaturas.
+\qquad La entrega poco anticipada está presente, con un volumen de actividad exponencialmente mayor en las 48 horas previas a las fechas límite, lo cual podría ser un indicador de procrastinación o de una carga de trabajo que se solapa entre asignaturas.
 
-En segundo lugar, los hábitos de estudio nocturno han dejado de ser una excepción para convertirse en la norma. Esto implica que el material del Aula Virtual debe ser autosuficiente, permitiendo al alumno avanzar de forma autónoma cuando no se está impartiendo la asignatura.
+\qquad En segundo lugar, los hábitos de estudio nocturno han dejado de ser una excepción para convertirse en la norma. Esto implica que el material del Aula Virtual debe ser autosuficiente, permitiendo al alumno avanzar de forma autónoma cuando no se está impartiendo la asignatura.
 
-En tercer lugar, mientras que una minoría de usuarios, como el caso del usuario U0072, presenta una interacción masiva, el grueso de la clase mantiene un ritmo constante pero mucho más moderado. Esta disparidad sugiere que el número de interacciones no solo mide el estudio, sino también diferentes estilos de aprendizaje.
-Algunos alumnos necesitan consultar el material repetidamente, mientras que otros realizan descargas puntuales y solo lo consultan en la plataforma una única vez.
+\qquad En tercer lugar, mientras que una minoría de usuarios, como el caso del usuario U0072, presenta una interacción masiva, el grueso de la clase mantiene un ritmo constante pero mucho más moderado. Esta disparidad sugiere que el número de interacciones no solo mide el estudio, sino también diferentes estilos de aprendizaje.
+
+\qquad Algunos alumnos necesitan consultar el material repetidamente, mientras que otros realizan descargas puntuales y solo lo consultan en la plataforma una única vez.
 
 
-Finalmente, la correlación moderada entre la asistencia y las visualizaciones (0.616) apoya bastante bien la forma de trabajo seguida en la asignatura. Esto parece indicar que las clases presenciales sirven como incentivo para que el alumnado utilice también la plataforma virtual. En cambio, la correlación más baja con las entregas (0.359) sugiere que la realización de trabajos no está tan ligada a la asistencia diaria, sino que muchas veces se concentra en periodos de estudio intensivo fuera del aula.
+\qquad Finalmente, la correlación moderada entre la asistencia y las visualizaciones (0.616) apoya bastante bien la forma de trabajo seguida en la asignatura. Esto parece indicar que las clases presenciales sirven como incentivo para que el alumnado utilice también la plataforma virtual. En cambio, la correlación más baja con las entregas (0.359) sugiere que la realización de trabajos no está tan ligada a la asistencia diaria, sino que muchas veces se concentra en periodos de estudio intensivo fuera del aula.
 
-En conclusión, el Aula Virtual no funciona únicamente como un repositorio de archivos, sino que refleja bastante bien la dinámica académica del curso. A partir de los datos analizados, una posible mejora sería distribuir las fechas y entregas de manera más escalonada, evitando así la acumulación de actividad que se producen en las últimas horas antes de los plazos.
+\qquad En conclusión, el Aula Virtual no funciona únicamente como un repositorio de archivos, sino que refleja bastante bien la dinámica académica del curso. A partir de los datos analizados, una posible mejora sería distribuir las fechas y entregas de manera más escalonada, evitando así la acumulación de actividad que se producen en las últimas horas antes de los plazos.
