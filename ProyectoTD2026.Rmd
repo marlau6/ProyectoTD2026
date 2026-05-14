@@ -205,6 +205,21 @@ nrow(cli_na) == num_NAs_ip
 
 ```
 
+En la Tabla \@ref(tab:tabla-logs1) y \@ref(tab:tabla-logs2) se muestran las primeras observaciones del conjunto de datos ya limpio, lo que nos permitirá empezar a explorar relaciones entre datos.
+
+```{r tabla-logs1, tab.cap= "Tabla"}
+logs_preview <- head(logs_df[,1:4], 5)
+logs_preview$contexto <- substr(logs_preview$contexto, 1, 20)
+knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
+```
+
+```{r tabla-logs2, tab.cap= "Tabla"}
+logs_preview <- head(logs_df[,5:9], 5)
+logs_preview$descripcion <- substr(logs_preview$descripcion, 1, 20)
+knitr::kable(logs_preview, caption = "Primeras filas del dataset de logs", booktabs = TRUE)
+
+```
+
 # Resultados
 
 \qquad En esta sección se abordan distintas preguntas con el objetivo de profundizar en el comportamiento de los usuarios en el Aula Virtual.
