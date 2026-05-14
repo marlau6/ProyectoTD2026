@@ -95,11 +95,7 @@ logs_df <- read_csv("data/logs_moodle_anon.csv",
 
 \qquad Aunque la librería read_csv nos proporciona la opción de importar el fichero con las clases que queramos, después de importarlo revisamos el data frame mediante una inspección de datos.
 
-<<<<<<< HEAD
 \qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros y 9 columnas, los nombres de las variables y sus clases. Tras este primer análisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas más tarde. Por eso, cambiamos los nombres de algunas columnas.
-=======
-\qquad En esta vemos las dimensiones del conjunto de datos, 109746 registros x 9 columnas, los nombres de las variables y sus clases. Tras este primer analisis, consideramos que algunos nombres de columnas, que contienen espacios y acentos, pueden darnos problemas mas tarde. Por eso, cambiamos los nombres de algunas columnas.
->>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r cambio_nombres, include = FALSE}
 # Dimensiones del data frame
@@ -219,15 +215,8 @@ nrow(cli_na) == num_NAs_ip
 
 ### ¿En qué horas se utiliza más el Aula Virtual?
 
-<<<<<<< HEAD
-La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará más el Aula Virtual?. 
-Visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. 
-Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. 
-Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
-=======
 \qquad La primera pregunta que nos planteamos al conocer los datos fué: ¿En qué hora se visitará más el Aula Virtual?.  Visualizamos los datos mediante la figura \@ref(fig:figura-1), que muestra la actividad en el Aula Virtual por hora, a lo largo del dia. 
 \qquad Esta nos mostró que no es uniforme, sino que se identifican franjas horarias con mayor concentración de eventos, lo que sugiere patrones relacionados con la realización de prácticas, entrega de tareas o consulta de materiales docentes; durante horarios académicos. Una curiosidad es que a medida que van avanzando las clases, la actividad va bajando y no se recompone hasta la tarde donde los estudiantes suelen estudiar por su cuenta.
->>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r figura-1, fig.cap="Actividad en el Aula Virtual por hora", echo = FALSE, results='asis', fig.pos='H'}
 cat("\\normalsize")
@@ -244,11 +233,7 @@ ggplot(logs_df, aes(x = hora)) + geom_bar(fill = "blue") + labs(x = "Hora", y = 
 
 \qquad En la Figura \@ref(fig:figura-2), en la que se muestra la distribución de la actividad a lo largo de la semana, se observa un ascenso claro durante la mitad de semana, mientras que durante el fin de semana la actividad disminuye notablemente.
 
-<<<<<<< HEAD
-Tras la visualización, concluimos que el día con mayor actividad es el miércoles y el día con menor actividad es el sábado. Esto podría identificarse como un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
-=======
 \qquad Tras la visualización, concluimos que el dia con mayor actividad es el miércoles y el día con menor actividad es el sábado. Esto podría identificarse como un patrón claro de que el uso del Aula Virtual está fuertemente vinculado al calendario académico. Podría deberse a que las sesiones prácticas de la asignatura se concentran durante la mitad de semana.
->>>>>>> 573475ca81bba0962931b8b4c20a9d89cea6064b
 
 ```{r figura-2, fig.cap="Análisis de la actividad durante la semana", echo = FALSE, fig.pos='H'}
 #Figura 4: Análisis de la actividad por dia de la semana
