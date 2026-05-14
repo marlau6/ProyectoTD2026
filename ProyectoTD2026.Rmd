@@ -527,7 +527,7 @@ knitr::kable(tabla_cor,digits = 3,caption = "Correlación entre asistencia y act
 
 \qquad Por otro lado, la relación entre asistencia y entregas es positiva pero más débil, su valor es 0.359. Esto sugiere que las entregas de tareas no dependen únicamente de la asistencia diaria, ya que muchos alumnos pueden realizar entregas fuera del horario de clase o en días distintos.
 
-
+\newpage
 # Conclusiones
 
 \qquad El análisis de los logs de la asignatura Tratamiento de los Datos durante el curso 2024-2025 permite extraer conclusiones fundamentales sobre el aprendizaje y la dinámica de los alumnos de Ciencia de Datos.
